@@ -1,11 +1,12 @@
 import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { LoginGoogle } from './shared/components/login-google/login-google';
+import { LoginGoogle } from './shared/component/LoginGoogle/login-google';
+import { Profissionalcomponent } from "./shared/component/AgendamentoProfissional/profissionalcomponent";
 
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, LoginGoogle],
+  imports: [RouterOutlet, LoginGoogle, Profissionalcomponent],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })

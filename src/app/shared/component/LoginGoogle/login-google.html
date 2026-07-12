@@ -5,4 +5,9 @@
 <button (click)="loginGoogle('cliente')">Login Cliente</button>
 <button (click)="verificarLogin()">Status Login</button>
 <button (click)="logout()">Logout</button>
+@if (usuarioAutenticado) {
+  <div class="autenticado">Autenticado</div>
+} @else {
+  <div class="não-autenticado">Não autenticado.</div>
+}
 </body>
