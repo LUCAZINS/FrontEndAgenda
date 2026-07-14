@@ -1,4 +1,194 @@
-<p>profissionalcomponent works!</p>
-<button (click)="mostrarAgendamentos()">Login Profissional</button>
-<button (click)="CriarAgendamento()">Criar Agendamento</button>
+<h1>Agendamentos do profissional</h1>
 
+<section class="formulario">
+  <h2>Criar agendamento</h2>
+
+  <label for="clienteId">ID do cliente</label>
+
+  <input
+    id="clienteId"
+    type="number"
+    name="clienteId"
+    [(ngModel)]="novoAgendamento.clienteId"
+    min="1"
+  />
+
+  <label for="servicoId">ID do serviço</label>
+
+  <input
+    id="servicoId"
+    type="number"
+    name="servicoId"
+    [(ngModel)]="novoAgendamento.servicoId"
+    min="1"
+  />
+
+  <label for="dataInicio">Data e horário</label>
+
+  <input
+    id="dataInicio"
+    type="datetime-local"
+    name="dataInicio"
+    [(ngModel)]="novoAgendamento.dataInicio"
+  />
+
+  <label for="observacoes">Observações</label>
+
+  <textarea
+    id="observacoes"
+    name="observacoes"
+    [(ngModel)]="novoAgendamento.observacoes"
+  ></textarea>
+
+  <label for="status">Status</label>
+
+  <select
+    id="status"
+    name="status"
+    [(ngModel)]="novoAgendamento.status"
+  >
+    <option value="Ativo">Ativo</option>
+    <option value="Pendente">Pendente</option>
+    <option value="Confirmado">Confirmado</option>
+  </select>
+
+  <button type="button" (click)="criarAgendamento()">
+    Criar agendamento
+  </button>
+</section>
+
+<hr />
+
+<section>
+  <h2>Agendamentos cadastrados</h2>
+
+  <button type="button" (click)="mostrarAgendamentos()">
+    Atualizar lista
+  </button>
+
+  @for (agendamento of agendamentos(); track agendamento.id) {
+    <div class="agendamento">
+      <p>
+        <strong>ID:</strong>
+        {{ agendamento.id }}
+      </p>
+
+      <p>
+        <strong>Cliente:</strong>
+        {{ agendamento.cliente?.nome || agendamento.clienteId }}
+      </p>
+
+      <p>
+        <strong>Serviço:</strong>
+        {{ agendamento.servico?.nome || agendamento.servicoId }}
+      </p>
+      <p>
+        <strong>Preço R$</strong>
+        {{ agendamento.servico.preco  }}
+      </p>
+      
+      <p>
+        <strong>Data:</strong>
+        {{ agendamento.dataInicio | date: 'dd/MM/yyyy HH:mm' }}
+      </p>
+        <p>
+        <strong>Data prevista para finalizar:</strong>
+        {{ agendamento.dataFim | date: 'dd/MM/yyyy HH:mm' }}
+      </p>
+      <p>
+        <strong>Status:</strong>
+        {{
+          agendamento.statusAgendamento 
+        }}
+      </p>
+
+      <p>
+        <strong>Observações:</strong>
+        {{ agendamento.observacoes }}
+      </p>
+      <button
+        type="button"
+        (click)="prepararEdicao(agendamento)"
+      >
+        Editar
+      </button>
+
+      <button
+        type="button"
+        (click)="cancelarAgendamento(agendamento.id)"
+      >
+        Cancelar
+      </button>
+
+      <button
+        type="button"
+        (click)="reativarAgendamento(agendamento.id)"
+      >
+        Reativar
+      </button>
+
+      <button
+        type="button"
+        (click)="deletarAgendamento(agendamento.id)"
+      >
+        Deletar
+      </button>
+    </div>
+  } @empty {
+    <p>Nenhum agendamento encontrado.</p>
+  }
+</section>
+
+@if (agendamentoEdicao.id) {
+  <hr />
+
+  <section class="formulario">
+    <h2>
+      Editar agendamento #{{ agendamentoEdicao.id }}
+    </h2>
+
+    <label for="editarDataInicio">
+      Data e horário
+    </label>
+
+    <input
+      id="editarDataInicio"
+      type="datetime-local"
+      name="editarDataInicio"
+      [(ngModel)]="agendamentoEdicao.dataInicio"
+    />
+
+    <label for="editarObservacoes">
+      Observações
+    </label>
+
+    <textarea
+      id="editarObservacoes"
+      name="editarObservacoes"
+      [(ngModel)]="agendamentoEdicao.observacoes"
+    ></textarea>
+
+    <label for="editarStatus">
+      Status
+    </label>
+
+    <select
+      id="editarStatus"
+      name="editarStatus"
+      [(ngModel)]="agendamentoEdicao.statusAgendamento"
+    >
+      <option value="Ativo">Ativo</option>
+      <option value="Pendente">Pendente</option>
+      <option value="Confirmado">Confirmado</option>
+      <option value="Cancelado">Cancelado</option>
+    </select>
+
+    <button type="button" (click)="editarAgendamento()">
+      Salvar alterações
+    </button>
+
+    <button type="button" (click)="limparFormularioEdicao()">
+      Fechar
+    </button>
+  </section>
+}
