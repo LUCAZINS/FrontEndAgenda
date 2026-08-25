@@ -1,0 +1,29 @@
+<div class="layout">
+
+  <aside class="sidebar">
+
+<h2>{{ nomeDoProfissional || 'Carregando...' }}</h2>
+    
+
+    <button routerLink="servicos">
+      Serviços
+    </button>
+
+    <button routerLink="profissionais">
+      Profissionais
+    </button>
+
+    <button routerLink="agendamentos">
+      Agendamentos
+    </button>
+
+  </aside>
+
+
+  <main class="content">
+
+    <router-outlet></router-outlet>
+
+  </main>
+
+</div>

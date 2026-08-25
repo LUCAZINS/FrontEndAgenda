@@ -1,0 +1,178 @@
+@if (mostrarNotificacao) {
+  <div class="toast-notificacao">
+    <span>{{ mensagemNotificacao }}</span>
+
+    <button
+      type="button"
+      class="toast-fechar"
+      (click)="mostrarNotificacao = false">
+      ×
+    </button>
+  </div>
+}
+
+<section class="formulario">
+  <h2>Criar serviço</h2>
+
+  <label for="clienteId">Nome do Serviço</label>
+
+  <input
+    id="nome"
+    type="string"
+    name="nome"
+    [(ngModel)]="novoServico.nome"
+    min="1"
+  />
+
+  <label for="servicoId">Categoria do Serviço</label>
+
+  <input
+    id="servicoId"
+    type="String"
+    name="servicoId"
+    [(ngModel)]="novoServico.categoria"
+    min="1"
+  />
+
+  <label for="dataInicio">Descrição do serviço</label>
+
+  <input
+    id="dataInicio"
+    type="string"
+    name="dataInicio"
+    [(ngModel)]="novoServico.descricao"
+  />
+
+  <label for="observacoes">Preço</label>
+
+  <textarea
+    id="observacoes"
+    type="number"
+    name="observacoes"
+    [(ngModel)]="novoServico.preco"
+  ></textarea>
+
+  <label for="status">Status</label>
+
+  <select
+    id="status"
+    name="status"
+    [(ngModel)]="novoServico.status"
+  >
+    <option value="Ativo">Ativo</option>
+    <option value="Pendente">Pendente</option>
+    <option value="Confirmado">Confirmado</option>
+  </select>
+
+<label for="dataInicio">Tempo em minutos</label>
+
+  <input
+    id="dataInicio"
+    type="number"
+    name="dataInicio"
+    [(ngModel)]="novoServico.tempoEmMinutos"
+  />
+
+
+<button (click)="mostrarServicos()">Buscar Serviços</button>
+
+
+<button
+  type="button"
+  (click)="exibirNotificacao('Teste de notificação')">
+  Testar notificação
+</button>
+
+<button
+  type="button"
+  (click)="CriarServico()">
+  Criar Serviço
+</button>
+
+
+@for (servico of servicos(); track servico.id) {
+  <div>
+    <h3>{{ servico.nome }}</h3>
+
+    <p>{{ servico.descricao }}</p>
+    <p>R$ {{ servico.preco }}</p>
+    <p>{{ servico.tempoEmMinutos }} minutos</p>
+    <p>{{ servico.status }}</p>
+
+    <button
+      type="button"
+      (click)="selecionarParaEditar(servico)"
+    >
+      Editar
+    </button>
+    <button type="button" (click)="deletarServico(servico.id)">
+      Excluir
+    </button>
+  </div>
+}
+@if (servicoEmEdicaoId !== null) {
+  <form (ngSubmit)="salvarEdicao()">
+    <h2>Editar serviço</h2>
+
+    <input
+      type="text"
+      name="nomeEdicao"
+      [(ngModel)]="servicoEmEdicao.nome"
+      placeholder="Nome"
+    >
+
+    <textarea
+      name="descricaoEdicao"
+      [(ngModel)]="servicoEmEdicao.descricao"
+      placeholder="Descrição"
+    ></textarea>
+
+    <input
+      type="number"
+      name="precoEdicao"
+      [(ngModel)]="servicoEmEdicao.preco"
+      placeholder="Preço"
+    >
+
+    <input
+      type="text"
+      name="categoriaEdicao"
+      [(ngModel)]="servicoEmEdicao.categoria"
+      placeholder="Categoria"
+    >
+
+    <input
+      type="number"
+      name="tempoEdicao"
+      [(ngModel)]="servicoEmEdicao.tempoEmMinutos"
+      placeholder="Tempo em minutos"
+    >
+
+    <input
+      type="text"
+      name="imagemEdicao"
+      [(ngModel)]="servicoEmEdicao.imagemUrl"
+      placeholder="URL da imagem"
+    >
+
+    <select
+      name="statusEdicao"
+      [(ngModel)]="servicoEmEdicao.status"
+    >
+      <option value="Ativo">Ativo</option>
+      <option value="Inativo">Inativo</option>
+    </select>
+
+    <button type="submit">
+      Salvar alterações
+    </button>
+
+    <button
+      type="button"
+      (click)="cancelarEdicao()"
+    >
+      Cancelar
+    </button>
+  </form>
+
+}

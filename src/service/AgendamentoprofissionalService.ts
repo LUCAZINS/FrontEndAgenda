@@ -70,12 +70,10 @@ export class AgendamentoprofissionalService {
 
   constructor(private http: HttpClient) {}
 
- buscarAgendamentosDoProfissional(
-  forcarAtualizacao = false
-): Observable<Agendamento[]> {
+ buscarAgendamentosDoProfissional(forcarAtualizacao = false): Observable<Agendamento[]> {
 
   if (this.carregado() && !forcarAtualizacao) {
-    console.log("Usando cache");
+    console.log("");
     return of(this.agendamentos());
   }
 
@@ -94,9 +92,7 @@ export class AgendamentoprofissionalService {
   );
 }
 
-  criarAgendamento(
-    dto: CriarAgendamentoDto
-  ): Observable<Agendamento> {
+  criarAgendamento(dto: CriarAgendamentoDto): Observable<Agendamento> {
     return this.http.post<Agendamento>(
       `${this.apiUrl}/api/Agendamentos/criaragendamento/profissional`,
       dto,
@@ -181,6 +177,7 @@ export class AgendamentoprofissionalService {
       ...lista,
       agendamento
     ]);
+    console.log('Agendamento adicionado ao cache:', agendamento);
   }
 
 atualizarNoCache(agendamento: Partial<Agendamento>): void {

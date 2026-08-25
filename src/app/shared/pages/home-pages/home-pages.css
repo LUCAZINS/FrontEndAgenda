@@ -1,0 +1,15 @@
+.sidebar button {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  background: transparent;
+  color: black;
+  text-align: left;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.sidebar button:hover {
+  background-color: #374151;
+}

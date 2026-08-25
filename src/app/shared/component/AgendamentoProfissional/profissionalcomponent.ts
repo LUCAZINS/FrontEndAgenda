@@ -1,11 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
-import { AgendamentoprofissionalService }
-  from '../../../../service/AgendamentoprofissionalService';
+import { AgendamentoprofissionalService } from '../../../../service/AgendamentoprofissionalService';
 
-import { SignalrService }
-  from '../../../../service/SingnalService';
+import { SignalrService } from '../../../../service/SingnalService';
 import { retry, timer } from 'rxjs';
 import { DatePipe } from '@angular/common';
 
@@ -38,7 +36,6 @@ export class Profissionalcomponent implements OnInit, OnDestroy {
   constructor(
     public agendamentoprofissionalService:
       AgendamentoprofissionalService,
-
     private signalrService: SignalrService
   ) {
     this.agendamentos =
@@ -119,7 +116,7 @@ export class Profissionalcomponent implements OnInit, OnDestroy {
       !this.novoAgendamento.servicoId ||
       !this.novoAgendamento.dataInicio
     ) {
-      console.error('Preencha os campos obrigatórios.');
+      console.log('Preencha todos os campos obrigatórios para criar um agendamento.');
       return;
     }
 
@@ -134,10 +131,9 @@ export class Profissionalcomponent implements OnInit, OnDestroy {
       observacoes: this.novoAgendamento.observacoes,
       status: this.novoAgendamento.status
     };
+    
 
-    this.agendamentoprofissionalService
-      .criarAgendamento(dto)
-      .subscribe({
+    this.agendamentoprofissionalService.criarAgendamento(dto).subscribe({
         next: agendamento => {
           console.log(
             'Agendamento criado com sucesso:',
