@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { environment } from '../environments/environments';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { AuthStatus } from '../app/auth/auth';
 
 export type GoogleUserType =
   'cliente' |
@@ -48,6 +49,14 @@ export class GoogleService {
       {
         withCredentials: true
       }
+    );
+  }
+
+
+  carregarStatusUsuario(): Observable<AuthStatus> {
+    return this.http.get<AuthStatus>(
+      `${this.apiUrl}/api/google/status`,
+      { withCredentials: true }
     );
   }
 }

@@ -5,12 +5,12 @@ import { AgendamentoprofissionalService } from '../../../../service/Agendamentop
 
 import { SignalrService } from '../../../../service/SingnalService';
 import { retry, timer } from 'rxjs';
-import { DatePipe } from '@angular/common';
+import { DatePipe  } from '@angular/common';
 
 @Component({
   selector: 'app-profissionalcomponent',
   standalone: true,
-  imports: [FormsModule, DatePipe],
+  imports: [FormsModule, DatePipe ],
   templateUrl: './profissionalcomponent.html',
   styleUrl: './profissionalcomponent.css',
 })
@@ -287,6 +287,7 @@ export class Profissionalcomponent implements OnInit, OnDestroy {
       observacoes: '',
       status: 'Ativo'
     };
+    
   }
 
   limparFormularioEdicao(): void {

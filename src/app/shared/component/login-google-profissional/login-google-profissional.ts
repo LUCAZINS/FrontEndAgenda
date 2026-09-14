@@ -2,9 +2,9 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { GoogleService, GoogleUserType} from '../../../../service/google-service';
 import { AuthService } from '../../../auth/auth';
 import { Router, Routes } from '@angular/router';
-
-
 import { Subscription } from 'rxjs';
+
+
 
 @Component({
   selector: 'app-login-google-profissional',
@@ -28,15 +28,35 @@ export class LoginGoogleProfissional
 
   ngOnInit(): void {
 
-    this.sub =
-      this.authService.estaAutenticado()
-        .subscribe(status => {
+    this.authService.verificarSessao()
+    .subscribe({
 
-          this.usuarioAutenticado = status;
+      next: usuario => {
 
-        });
+        this.usuarioAutenticado = usuario.autenticado;
 
-  }
+        if (usuario.autenticado) {
+
+          this.router.navigate([
+            '/Auth/login/Profissional/home'
+          ]);
+
+        }
+
+      },
+
+      error: erro => {
+
+        console.error(
+          'Erro ao verificar sessão:',
+          erro
+        );
+
+      }
+
+    });
+
+}
 
   ngOnDestroy(): void {
 

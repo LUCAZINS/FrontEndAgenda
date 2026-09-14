@@ -22,11 +22,16 @@ export const routes: Routes = [
         .then(m => m.HomePages),
     canActivate: [authGuard],
     children: [
-          {
+      {
         path: 'servicos',
         loadComponent: () =>
           import('./shared/component/ServicoProfissional/servicocomponent/servicocomponent')
             .then(m => m.Servicocomponent),
+      },{
+        path: 'agendamentos',
+        loadComponent: () =>
+          import('./shared/component/AgendamentoProfissional/profissionalcomponent')
+            .then(m => m.Profissionalcomponent),
       },
 
     ]

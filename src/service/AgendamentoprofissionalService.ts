@@ -27,7 +27,7 @@ export interface ServicoDetalhe {
   descricao: string;
   categoria: string;
   tempoEmMinutos: number;
-  imagemUrl: string;
+imagens: string[];
   status: string;
 }
 
@@ -222,4 +222,25 @@ atualizarNoCache(agendamento: Partial<Agendamento>): void {
     this.agendamentos.set([]);
     this.carregado.set(false);
   }
+
+
+BuscarServicosDeHoje(): Observable<Agendamento[]> {
+  const url = `${this.apiUrl}/api/Agendamentos/Hoje`;
+
+  console.log('[API] Buscando agendamentos de hoje diretamente na API...');
+
+  return this.http
+    .get<Agendamento[]>(url, {
+      withCredentials: true
+    })
+    .pipe(
+      tap(agendamentos => {
+        console.log(
+          `[API] Sucesso! ${agendamentos.length} agendamentos de hoje retornados da API.`
+        );
+
+        this.agendamentos.set(agendamentos);
+      })
+    );
+}
 }

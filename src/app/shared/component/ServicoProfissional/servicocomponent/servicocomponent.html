@@ -1,178 +1,589 @@
-@if (mostrarNotificacao) {
-  <div class="toast-notificacao">
-    <span>{{ mensagemNotificacao }}</span>
-
-    <button
-      type="button"
-      class="toast-fechar"
-      (click)="mostrarNotificacao = false">
-      ×
-    </button>
+@if (loading) {
+  <div class="grade-servicos">
+    @for (i of [1, 2, 3]; track i) {
+      <div class="esqueleto-botao"></div>
+      <div class="esqueleto-botao"></div>
+    }
   </div>
 }
 
-<section class="formulario">
-  <h2>Criar serviço</h2>
+@if (!loading) {
+  @if (servicos().length === 0) {
+    <div class="sem-servicos">
+      <p>Nenhum serviço cadastrado até o momento.</p>
+    </div>
+  }
 
-  <label for="clienteId">Nome do Serviço</label>
+<div class="cabecalho-servicos">
 
-  <input
-    id="nome"
-    type="string"
-    name="nome"
-    [(ngModel)]="novoServico.nome"
-    min="1"
-  />
+  <div class="titulo-servicos">
+    <div>
+      <span class="subtitulo-servicos">GERENCIAMENTO</span>
 
-  <label for="servicoId">Categoria do Serviço</label>
+      <h2>Meus serviços</h2>
 
-  <input
-    id="servicoId"
-    type="String"
-    name="servicoId"
-    [(ngModel)]="novoServico.categoria"
-    min="1"
-  />
+      <p>
+        Gerencie seus serviços e acompanhe suas vendas.
+      </p>
+    </div>
 
-  <label for="dataInicio">Descrição do serviço</label>
-
-  <input
-    id="dataInicio"
-    type="string"
-    name="dataInicio"
-    [(ngModel)]="novoServico.descricao"
-  />
-
-  <label for="observacoes">Preço</label>
-
-  <textarea
-    id="observacoes"
-    type="number"
-    name="observacoes"
-    [(ngModel)]="novoServico.preco"
-  ></textarea>
-
-  <label for="status">Status</label>
-
-  <select
-    id="status"
-    name="status"
-    [(ngModel)]="novoServico.status"
-  >
-    <option value="Ativo">Ativo</option>
-    <option value="Pendente">Pendente</option>
-    <option value="Confirmado">Confirmado</option>
-  </select>
-
-<label for="dataInicio">Tempo em minutos</label>
-
-  <input
-    id="dataInicio"
-    type="number"
-    name="dataInicio"
-    [(ngModel)]="novoServico.tempoEmMinutos"
-  />
+    @if (!exibirFormulario) {
+      <button
+        type="button"
+        class="btn-criar-novo"
+        (click)="exibirFormulario = true"
+      >
+        <span class="icone-plus">+</span>
+        Criar novo serviço
+      </button>
+    }
+  </div>
 
 
-<button (click)="mostrarServicos()">Buscar Serviços</button>
+  <div class="barra-filtros">
+
+    <!-- PESQUISA -->
+    <div class="filtro-grupo filtro-pesquisa">
+
+      <label for="buscaNome">
+        Pesquisar serviço
+      </label>
+
+      <div class="campo-pesquisa">
+
+        <span class="icone-pesquisa">⌕</span>
+
+        <input
+          id="buscaNome"
+          type="text"
+          placeholder="Digite o nome do serviço..."
+          [value]="filtroNome()"
+          (input)="filtroNome.set($any($event.target).value)"
+          class="input-busca"
+        />
+
+      </div>
+
+    </div>
 
 
-<button
-  type="button"
-  (click)="exibirNotificacao('Teste de notificação')">
-  Testar notificação
-</button>
+    <!-- ORDENAÇÃO -->
+    <div class="filtro-grupo">
 
-<button
-  type="button"
-  (click)="CriarServico()">
-  Criar Serviço
-</button>
+      <label for="ordemVendas">
+        Ordenar por vendas
+      </label>
+
+      <select
+        id="ordemVendas"
+        [value]="ordenacaoVendas()"
+        (change)="ordenacaoVendas.set($any($event.target).value)"
+        class="select-busca"
+      >
+        <option value="nenhuma">
+          Padrão
+        </option>
+
+        <option value="decrescente">
+          Mais vendidos
+        </option>
+
+        <option value="crescente">
+          Menos vendidos
+        </option>
+      </select>
+
+    </div>
 
 
-@for (servico of servicos(); track servico.id) {
-  <div>
-    <h3>{{ servico.nome }}</h3>
+    <!-- CATEGORIA -->
+    <div class="filtro-grupo">
 
-    <p>{{ servico.descricao }}</p>
-    <p>R$ {{ servico.preco }}</p>
-    <p>{{ servico.tempoEmMinutos }} minutos</p>
-    <p>{{ servico.status }}</p>
+      <label for="filtroCategoria">
+        Categoria
+      </label>
+
+      <select
+        id="filtroCategoria"
+        [value]="filtroCategoria()"
+        (change)="filtroCategoria.set($any($event.target).value)"
+        class="select-busca"
+      >
+        <option value="todas">
+          Todas as categorias
+        </option>
+
+        @for (categoria of categoriasExistentes; track categoria) {
+          <option [value]="categoria">
+            {{ categoria }}
+          </option>
+        }
+      </select>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- NOTIFICAÇÕES -->
+<div class="container-notificacoes">
+
+  @for (
+    notificacao of notificacaoService.notificacoes();
+    track notificacao.id
+  ) {
+
+    <div
+      class="toast-notificacao"
+      [class]="notificacao.tipo"
+    >
+
+      <span>
+        {{ notificacao.mensagem }}
+      </span>
+
+      <button
+        type="button"
+        class="toast-fechar"
+        (click)="notificacaoService.remover(notificacao.id)"
+      >
+        ×
+      </button>
+
+    </div>
+
+  }
+
+</div>
+
+  <div class="grade-servicos">
+    @for (servico of servicosFiltrados(); track servico.id) {
+<div class="card-servico">
+
+  <!-- IMAGENS -->
+  @if (servico.imagens?.length > 0) {
+
+    <div class="carrossel-imagens">
+
+      <div class="imagem-container">
+
+        <img
+          [src]="obterUrlImagem(servico.imagens[obterIndiceImagem(servico.id)])"
+          [alt]="servico.nome"
+          class="imagem-servico"
+        />
+
+        @if (servico.imagens.length > 1) {
+
+          <button
+            type="button"
+            class="btn-imagem btn-imagem-esquerda"
+            (click)="imagemAnterior(servico)">
+            ‹
+          </button>
+
+          <button
+            type="button"
+            class="btn-imagem btn-imagem-direita"
+            (click)="proximaImagem(servico)">
+            ›
+          </button>
+
+          <span class="contador-imagem">
+            {{ obterIndiceImagem(servico.id) + 1 }}
+            / {{ servico.imagens.length }}
+          </span>
+
+        }
+
+      </div>
+
+    </div>
+
+  } @else {
+
+    <div class="sem-imagem">
+      <span>Sem imagem</span>
+    </div>
+
+  }
+  <span>
+    <strong class="nome-servico">
+      {{ servico.nome }}
+    </strong>
+  </span>
+
+  <!-- INFORMAÇÕES -->
+  <div class="informacoes-servico">
+
+    
+
+
+  <span
+    class="categoria-servico"
+    [ngClass]="obterCorCategoria(servico.categoria)">
+    {{ servico.categoria }}
+  </span>
+
+
+    <p class="descricao-servico">
+      {{ servico.descricao }}
+    </p>
+
+
+    <div class="detalhes-servico">
+
+      <div>
+        <span class="label-detalhe">Preço</span>
+        <strong class="preco">
+          {{ servico.preco | currency:'BRL' }}
+        </strong>
+      </div>
+
+      <div>
+        <span class="label-detalhe">Duração</span>
+        <strong>
+          {{ servico.tempoEmMinutos }} min
+        </strong>
+      </div>
+
+    </div>
+
+
+    <div class="vendas-servico">
+      <span>Vendas</span>
+      <strong>{{ servico.quantidadeVendas }}</strong>
+    </div>
+
+  </div>
+
+
+  <!-- BOTÕES -->
+  <div class="botoes-card">
 
     <button
       type="button"
-      (click)="selecionarParaEditar(servico)"
-    >
+      class="btn-editar"
+      (click)="selecionarParaEditar(servico)">
       Editar
     </button>
-    <button type="button" (click)="deletarServico(servico.id)">
-      Excluir
-    </button>
-  </div>
-}
-@if (servicoEmEdicaoId !== null) {
-  <form (ngSubmit)="salvarEdicao()">
-    <h2>Editar serviço</h2>
-
-    <input
-      type="text"
-      name="nomeEdicao"
-      [(ngModel)]="servicoEmEdicao.nome"
-      placeholder="Nome"
-    >
-
-    <textarea
-      name="descricaoEdicao"
-      [(ngModel)]="servicoEmEdicao.descricao"
-      placeholder="Descrição"
-    ></textarea>
-
-    <input
-      type="number"
-      name="precoEdicao"
-      [(ngModel)]="servicoEmEdicao.preco"
-      placeholder="Preço"
-    >
-
-    <input
-      type="text"
-      name="categoriaEdicao"
-      [(ngModel)]="servicoEmEdicao.categoria"
-      placeholder="Categoria"
-    >
-
-    <input
-      type="number"
-      name="tempoEdicao"
-      [(ngModel)]="servicoEmEdicao.tempoEmMinutos"
-      placeholder="Tempo em minutos"
-    >
-
-    <input
-      type="text"
-      name="imagemEdicao"
-      [(ngModel)]="servicoEmEdicao.imagemUrl"
-      placeholder="URL da imagem"
-    >
-
-    <select
-      name="statusEdicao"
-      [(ngModel)]="servicoEmEdicao.status"
-    >
-      <option value="Ativo">Ativo</option>
-      <option value="Inativo">Inativo</option>
-    </select>
-
-    <button type="submit">
-      Salvar alterações
-    </button>
 
     <button
       type="button"
+      class="btn-excluir"
+      (click)="deletarServico(servico.id)">
+      Excluir
+    </button>
+
+  </div>
+
+</div>
+    }
+  </div>
+
+  @if (servicoEmEdicaoId !== null) {
+    <div
+      class="modal-overlay"
       (click)="cancelarEdicao()"
     >
-      Cancelar
-    </button>
-  </form>
+      <div
+        class="modal-container"
+        (click)="$event.stopPropagation()"
+      >
+        <div class="modal-header">
+          <h2>Editar Serviço</h2>
 
+          <button
+            type="button"
+            class="btn-fechar-modal"
+            (click)="cancelarEdicao()"
+          >
+            ×
+          </button>
+        </div>
+
+        <form
+          class="formulario"
+          (ngSubmit)="salvarEdicao()"
+        >
+          <label for="nomeEdicao">Nome do Serviço</label>
+
+          <input
+            id="nomeEdicao"
+            type="text"
+            name="nomeEdicao"
+            [(ngModel)]="servicoEmEdicao.nome"
+            placeholder="Nome"
+          />
+
+          <label for="categoriaEdicao">Categoria</label>
+
+          <input
+            id="categoriaEdicao"
+            type="text"
+            name="categoriaEdicao"
+            [(ngModel)]="servicoEmEdicao.categoria"
+            list="categoriasSugestoesEdicao"
+            placeholder="Categoria"
+          />
+
+          <datalist id="categoriasSugestoesEdicao">
+            @for (cat of categoriasExistentes; track cat) {
+              <option [value]="cat"></option>
+            }
+          </datalist>
+
+          <label for="descricaoEdicao">Descrição</label>
+
+          <textarea
+            id="descricaoEdicao"
+            name="descricaoEdicao"
+            [(ngModel)]="servicoEmEdicao.descricao"
+            placeholder="Descrição"
+          ></textarea>
+
+          <label for="precoEdicao">Preço</label>
+
+          <input
+            id="precoEdicao"
+            type="text"
+            name="precoEdicao"
+            [value]="precoEdicaoFormatadoVisivel"
+            (input)="formatarMoedaEdicaoEmTempoReal($event)"
+            placeholder="R$ 0,00"
+          />
+
+          <label for="tempoEdicao">Tempo em minutos</label>
+
+          <input
+            id="tempoEdicao"
+            type="number"
+            name="tempoEdicao"
+            [(ngModel)]="servicoEmEdicao.tempoEmMinutos"
+            placeholder="Tempo em minutos"
+          />
+
+          @if (servicoEmEdicao.imagens?.length > 0) {
+            <div class="carrossel-imagens">
+              <img
+                [src]="obterUrlImagem(servicoEmEdicao.imagens[
+                  obterIndiceImagem(servicoEmEdicaoId!)
+                ])"
+                [alt]="servicoEmEdicao.nome"
+                class="imagem-preview-edicao"
+              />
+
+              @if (servicoEmEdicao.imagens.length > 1) {
+                <div class="controles-imagem">
+                  <button
+                    type="button"
+                    class="btn-imagem"
+                    (click)="imagemAnterior($any({
+                      id: servicoEmEdicaoId,
+                      imagens: servicoEmEdicao.imagens
+                    }))"
+                  >
+                    ‹
+                  </button>
+
+                  <span>
+                    {{ obterIndiceImagem(servicoEmEdicaoId!) + 1 }}
+                    / {{ servicoEmEdicao.imagens.length }}
+                  </span>
+
+                  <button
+                    type="button"
+                    class="btn-imagem"
+                    (click)="proximaImagem($any({
+                      id: servicoEmEdicaoId,
+                      imagens: servicoEmEdicao.imagens
+                    }))"
+                  >
+                    ›
+                  </button>
+                </div>
+              }
+
+              <button
+                type="button"
+                class="btn-excluir-imagem"
+                (click)="excluirImagem(obterIdImagem(
+                  servicoEmEdicao.imagens[
+                    obterIndiceImagem(servicoEmEdicaoId!)
+                  ]
+                ))"
+              >
+                🗑️ Excluir esta imagem
+              </button>
+
+            </div>
+          }
+
+          <label for="imagemEdicao">Trocar imagem</label>
+
+          <input
+            id="imagemEdicao"
+            type="file"
+            accept="image/jpeg,image/png,image/webp"
+            (change)="selecionarImagemEdicao($event)"
+          />
+
+          <label for="statusEdicao">Status</label>
+
+          <select
+            id="statusEdicao"
+            name="statusEdicao"
+            [(ngModel)]="servicoEmEdicao.status"
+          >
+            <option value="Ativo">Ativo</option>
+            <option value="Inativo">Inativo</option>
+          </select>
+
+          <div
+            class="modal-botoes"
+            style="margin-top: 20px; display: flex; gap: 10px; justify-content: flex-end;"
+          >
+            <button
+              type="button"
+              class="btn-cancelar"
+              (click)="cancelarEdicao()"
+            >
+              Cancelar
+            </button>
+
+            <button
+              type="submit"
+              class="btn-salvar"
+            >
+              Salvar Alterações
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  }
+
+  @if (exibirFormulario) {
+    <div
+      class="modal-overlay"
+      (click)="exibirFormulario = false"
+    >
+      <div
+        class="modal-container"
+        (click)="$event.stopPropagation()"
+      >
+        <div class="modal-header">
+          <h2>Criar Novo Serviço</h2>
+
+          <button
+            type="button"
+            class="btn-fechar-modal"
+            (click)="exibirFormulario = false"
+          >
+            ×
+          </button>
+        </div>
+
+        <section class="formulario">
+          <label for="nome">Nome do Serviço</label>
+
+          <input
+            id="nome"
+            type="text"
+            name="nome"
+            [(ngModel)]="novoServico.nome"
+          />
+
+          <label for="categoria">Categoria do Serviço</label>
+
+          <input
+            id="categoria"
+            type="text"
+            name="categoria"
+            [(ngModel)]="novoServico.categoria"
+            list="categoriasSugestoes"
+          />
+
+          <datalist id="categoriasSugestoes">
+            @for (cat of categoriasExistentes; track cat) {
+              <option [value]="cat"></option>
+            }
+          </datalist>
+
+          <label for="descricao">Descrição do serviço</label>
+
+          <input
+            id="descricao"
+            type="text"
+            name="descricao"
+            [(ngModel)]="novoServico.descricao"
+          />
+
+          <label for="preco">Preço</label>
+
+          <input
+            id="preco"
+            type="text"
+            name="preco"
+            [value]="precoFormatadoVisivel"
+            (input)="formatarMoedaEmTempoReal($event)"
+            placeholder="R$ 0,00"
+          />
+
+          <label for="status">Status</label>
+
+          <select
+            id="status"
+            name="status"
+            [(ngModel)]="novoServico.status"
+          >
+            <option value="Ativo">Ativo</option>
+            <option value="Pendente">Pendente</option>
+            <option value="Confirmado">Confirmado</option>
+          </select>
+
+          <label for="tempo">Tempo em minutos</label>
+
+          <input
+            id="tempo"
+            type="number"
+            name="tempo"
+            [(ngModel)]="novoServico.tempoEmMinutos"
+          />
+
+          <label for="imagem">Imagem do Serviço</label>
+
+          <input
+            id="imagem"
+            type="file"
+            accept="image/jpeg,image/png,image/webp"
+            (change)="selecionarImagem($event)"
+          />
+
+          <div
+            class="modal-botoes"
+            style="margin-top: 20px; display: flex; gap: 10px; justify-content: flex-end;"
+          >
+            <button
+              type="button"
+              class="btn-cancelar"
+              (click)="exibirFormulario = false"
+            >
+              Cancelar
+            </button>
+
+            <button
+              type="button"
+              class="btn-salvar"
+              (click)="CriarServico()"
+            >
+              Salvar Serviço
+            </button>
+          </div>
+        </section>
+      </div>
+    </div>
+  }
 }

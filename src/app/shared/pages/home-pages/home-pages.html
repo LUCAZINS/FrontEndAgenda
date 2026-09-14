@@ -1,29 +1,145 @@
-<div class="layout">
+<div class="layout-superior">
 
-  <aside class="sidebar">
+  <!-- MENU SUPERIOR -->
+  <header class="navbar-topo">
 
-<h2>{{ nomeDoProfissional || 'Carregando...' }}</h2>
-    
+    <div class="navbar-esquerda">
 
-    <button routerLink="servicos">
-      Serviços
-    </button>
+      <!-- Logo -->
+      <a routerLink="/Auth/login/Profissional/home" class="logo">
+        <h2>Imagem da logo</h2>
+      </a>
 
-    <button routerLink="profissionais">
-      Profissionais
-    </button>
+      <!-- Separador -->
+      <div class="separador"></div>
 
-    <button routerLink="agendamentos">
-      Agendamentos
-    </button>
+      <!-- Saudação -->
+      <h2 class="saudacao">
+        Olá, {{ obterPrimeiroNome(nomeDoProfissional) }}!
+      </h2>
+
+      <!-- Foto -->
+      <a routerLink="/Auth/Profissional/home/Perfil" class="link-foto">
+        <img
+          class="foto-profissional"
+          [src]="imagemUrlPerfil"
+          alt="Foto do profissional">
+      </a>
+
+    </div>
+
+    <!-- MENU -->
+    <nav class="navbar-menu">
+
+      <button routerLink="servicos" routerLinkActive="ativo">
+        Serviços
+      </button>
+
+      <button routerLink="agendamentos" routerLinkActive="ativo">
+        Agendamentos
+      </button>
+
+      <button routerLink="clientes" routerLinkActive="ativo">
+        Clientes
+      </button>
+
+      <button routerLink="notificacoes" routerLinkActive="ativo">
+        Notificações
+      </button>
+
+      <button (click)="logout()">
+        Sair
+      </button>
+
+    </nav>
+
+  </header>
+
+
+  <!-- CONTEÚDO -->
+  <main class="conteudo-principal">
+
+    <!-- PÁGINAS -->
+    <section class="conteudo-paginas">
+      <router-outlet></router-outlet>
+    </section>
+
+
+<!-- BARRA LATERAL — SOMENTE NA HOME -->
+@if (mostrarBarraAgendamentos()) {
+
+  <aside class="barra-agendamentos">
+
+    <div class="titulo-agendamentos">
+      <h3>Próximos agendamentos</h3>
+
+      <a routerLink="agendamentos">
+        Ver todos
+      </a>
+    </div>
+
+    <div class="data-agendamentos">
+      <span>Hoje</span>
+    </div>
+
+
+    @if (agendamentosHoje().length === 0) {
+      <div class="nenhum-agendamento">
+        <span>Nenhum agendamento para hoje.</span>
+      </div>
+
+    } @else {
+
+    @for (
+      agendamento of agendamentosHoje();
+      track agendamento.id
+    ) {
+
+        @if (agendamento.statusAgendamento !== 'Cancelado') {
+
+          <div class="agendamento">
+
+            <div class="horario">
+              {{ agendamento.dataInicio | date:'HH:mm' }}
+            </div>
+
+            <div class="informacoes-agendamento">
+
+              <strong>
+                {{ agendamento.cliente.nome }}
+              </strong>
+
+              <span>
+                {{ agendamento.servico.nome }}
+              </span>
+
+            </div>
+
+          </div>
+
+        }
+
+      }
+
+    }
 
   </aside>
 
-
-  <main class="content">
-
-    <router-outlet></router-outlet>
+}
 
   </main>
+  <footer class="rodape">
 
+    <p>
+      Suporte: Contato
+    </p>
+
+    <p>
+      © 2024 Agenda Fácil. Todos os direitos reservados.
+    </p>
+
+  </footer>
 </div>
+
+
+<!-- RODAPÉ -->

@@ -1,15 +1,556 @@
-.sidebar button {
+/* =====================================================
+   ESTRUTURA GERAL
+===================================================== */
+
+.layout-superior {
   width: 100%;
-  padding: 12px;
-  border: none;
-  background: transparent;
-  color: black;
-  text-align: left;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 16px;
+  min-height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+
+  box-sizing: border-box;
+
+  background-color: #eeeded;
 }
 
-.sidebar button:hover {
-  background-color: #374151;
+
+/* =====================================================
+   NAVBAR
+===================================================== */
+
+.navbar-topo {
+  width: 100%;
+  height: 70px;
+
+  flex-shrink: 0;
+
+  background-color: #000000;
+  color: #ffffff;
+
+  padding: 0 30px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  box-sizing: border-box;
+
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+
+  z-index: 100;
+
+  border-radius: 10px 10px 0 0;
+}
+
+
+/* =====================================================
+   LADO ESQUERDO DA NAVBAR
+===================================================== */
+
+.navbar-esquerda {
+  display: flex;
+  align-items: center;
+
+  gap: 20px;
+
+  min-width: 0;
+}
+
+
+/* =====================================================
+   LOGO
+===================================================== */
+
+.logo {
+  text-decoration: none;
+  color: #ffffff;
+
+  display: flex;
+  align-items: center;
+
+  flex-shrink: 0;
+}
+
+.logo h2 {
+  margin: 0;
+
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+
+/* =====================================================
+   SEPARADOR
+===================================================== */
+
+.separador {
+  width: 1px;
+  height: 30px;
+
+  background-color: #333333;
+
+  flex-shrink: 0;
+}
+
+
+/* =====================================================
+   SAUDAÇÃO
+===================================================== */
+
+.saudacao {
+  margin: 0;
+
+  font-size: 0.95rem;
+  font-weight: 600;
+
+  color: #ffffff;
+
+  white-space: nowrap;
+}
+
+
+/* =====================================================
+   FOTO DO PROFISSIONAL
+===================================================== */
+
+.link-foto {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  text-decoration: none;
+
+  flex-shrink: 0;
+}
+
+.foto-profissional {
+  width: 42px;
+  height: 42px;
+
+  border-radius: 50%;
+
+  object-fit: cover;
+
+  display: block;
+
+  cursor: pointer;
+
+  border: 2px solid #ffffff;
+
+  transition: transform 0.2s ease;
+}
+
+.foto-profissional:hover {
+  transform: scale(1.08);
+}
+
+
+/* =====================================================
+   MENU
+===================================================== */
+
+.navbar-menu {
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+
+  flex-shrink: 0;
+}
+
+
+/* BOTÕES */
+
+.navbar-menu button {
+  background: none;
+  border: none;
+
+  color: #aaaaaa;
+
+  padding: 8px 16px;
+
+  font-size: 0.95rem;
+  font-weight: 500;
+
+  border-radius: 6px;
+
+  cursor: pointer;
+
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+
+/* HOVER */
+
+.navbar-menu button:hover {
+  background-color: rgba(116, 2, 255, 0.15);
+
+  color: #ffffff;
+}
+
+
+/* ITEM ATIVO */
+
+.navbar-menu button.ativo {
+  background-color: #7402ff;
+
+  color: #ffffff;
+
+  font-weight: 600;
+}
+
+
+/* =====================================================
+   CONTEÚDO PRINCIPAL
+===================================================== */
+
+.conteudo-principal {
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  display: flex;
+  align-items: stretch; /* 👈 ADICIONE ESTA LINHA */
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+
+/* =====================================================
+   ÁREA DAS PÁGINAS
+===================================================== */
+
+.conteudo-paginas {
+  flex: 1;
+
+  min-width: 0;
+  min-height: 0;
+
+  padding: 30px;
+
+  box-sizing: border-box;
+
+  background-color: #eeeded;
+
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+
+/* =====================================================
+   BARRA LATERAL
+===================================================== */
+
+.barra-agendamentos {
+  width: 300px;
+
+  min-width: 300px;
+
+  flex-shrink: 0;
+
+  height: auto;
+
+  background-color: #050505;
+
+  border-left: 1px solid #333333;
+
+  padding: 25px 20px;
+
+  box-sizing: border-box;
+
+  overflow-y: auto;
+}
+
+
+/* =====================================================
+   TÍTULO DA SIDEBAR
+===================================================== */
+
+.titulo-agendamentos {
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 10px;
+
+  margin-bottom: 25px;
+}
+
+.titulo-agendamentos h3 {
+  margin: 0;
+
+  color: #ffffff;
+
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.titulo-agendamentos a {
+  color: #9f61ec;
+
+  font-size: 13px;
+
+  text-decoration: none;
+
+  white-space: nowrap;
+
+  transition: color 0.2s ease;
+}
+
+.titulo-agendamentos a:hover {
+  color: #b984f5;
+}
+
+
+/* =====================================================
+   DATA
+===================================================== */
+
+.data-agendamentos {
+  margin-bottom: 15px;
+
+  color: #ffffff;
+
+  font-size: 14px;
+  font-weight: bold;
+}
+
+
+/* =====================================================
+   AGENDAMENTO
+===================================================== */
+
+.agendamento {
+  display: flex;
+
+  gap: 15px;
+
+  padding: 15px 0;
+
+  border-bottom: 1px solid #333333;
+}
+
+
+/* =====================================================
+   HORÁRIO
+===================================================== */
+
+.horario {
+  min-width: 45px;
+
+  color: #8c63bf;
+
+  font-size: 14px;
+  font-weight: bold;
+}
+
+
+/* =====================================================
+   INFORMAÇÕES
+===================================================== */
+
+.informacoes-agendamento {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 5px;
+
+  min-width: 0;
+}
+
+.informacoes-agendamento strong {
+  color: #ffffff;
+
+  font-size: 14px;
+}
+
+.informacoes-agendamento span {
+  color: #777777;
+
+  font-size: 13px;
+}
+
+
+/* =====================================================
+   RODAPÉ
+===================================================== */
+
+.rodape {
+  width: 100%;
+
+  flex-shrink: 0;
+
+  min-height: 55px;
+
+  padding: 12px 30px;
+
+  box-sizing: border-box;
+
+  background-color: #000000;
+
+  color: #ffffff;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 20px;
+
+  font-size: 13px;
+}
+
+.nenhum-agendamento {
+  color: #777777;
+
+  font-size: 14px;
+}
+
+.rodape p {
+  margin: 0;
+}
+
+
+/* =====================================================
+   SCROLLBAR
+===================================================== */
+
+.conteudo-paginas::-webkit-scrollbar,
+.barra-agendamentos::-webkit-scrollbar {
+  width: 7px;
+}
+
+.conteudo-paginas::-webkit-scrollbar-track,
+.barra-agendamentos::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.conteudo-paginas::-webkit-scrollbar-thumb,
+.barra-agendamentos::-webkit-scrollbar-thumb {
+  background-color: #777777;
+
+  border-radius: 10px;
+}
+
+.conteudo-paginas::-webkit-scrollbar-thumb:hover,
+.barra-agendamentos::-webkit-scrollbar-thumb:hover {
+  background-color: #555555;
+}
+
+
+/* =====================================================
+   RESPONSIVIDADE
+===================================================== */
+
+@media (max-width: 1000px) {
+
+  .navbar-topo {
+    padding: 0 20px;
+  }
+
+  .navbar-esquerda {
+    gap: 12px;
+  }
+
+  .navbar-menu {
+    gap: 4px;
+  }
+
+  .navbar-menu button {
+    padding: 8px 10px;
+  }
+
+  .barra-agendamentos {
+    width: 260px;
+    min-width: 260px;
+  }
+
+}
+
+
+@media (max-width: 800px) {
+
+  .navbar-topo {
+    height: auto;
+
+    min-height: 70px;
+
+    padding: 12px 20px;
+
+    flex-wrap: wrap;
+
+    gap: 10px;
+  }
+
+  .navbar-menu {
+    width: 100%;
+
+    justify-content: center;
+
+    flex-wrap: wrap;
+  }
+
+  .conteudo-principal {
+    flex-direction: column;
+
+    overflow-y: auto;
+  }
+
+  .conteudo-paginas {
+    overflow: visible;
+
+    padding: 20px;
+  }
+
+  .barra-agendamentos {
+    width: 100%;
+    min-width: 0;
+
+    height: auto;
+
+    /* max-height: 350px; */
+  }
+
+  .rodape {
+    flex-direction: column;
+
+    justify-content: center;
+
+    text-align: center;
+  }
+
+}
+
+
+@media (max-width: 550px) {
+
+  .navbar-esquerda {
+    width: 100%;
+
+    justify-content: center;
+  }
+
+  .separador,
+  .saudacao {
+    display: none;
+  }
+
+  .navbar-menu {
+    gap: 3px;
+  }
+
+  .navbar-menu button {
+    padding: 7px 8px;
+
+    font-size: 13px;
+  }
+
+  .conteudo-paginas {
+    padding: 15px;
+  }
+
 }

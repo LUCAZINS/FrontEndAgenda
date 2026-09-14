@@ -1,0 +1,920 @@
+/* =========================================================
+   IMAGENS DOS SERVIÇOS
+========================================================= */
+
+.imagem-servico {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  margin: 0;
+  border-radius: 0;
+  transition: transform 0.3s ease;
+}
+
+.imagem-preview-edicao {
+  width: 200px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+
+
+/* =========================================================
+   MODAL
+========================================================= */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+
+  width: 100vw;
+  height: 100vh;
+
+  background-color: rgba(0, 0, 0, 0.55);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  z-index: 1000;
+
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.modal-container {
+  background-color: #ffffff;
+
+  padding: 25px;
+
+  border-radius: 12px;
+
+  width: 100%;
+  max-width: 500px;
+
+  max-height: 90vh;
+  overflow-y: auto;
+
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.25);
+
+  box-sizing: border-box;
+}
+
+
+/* Cabeçalho do modal */
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  margin-bottom: 20px;
+
+  border-bottom: 1px solid #eeeeee;
+
+  padding-bottom: 12px;
+}
+
+.modal-header h2 {
+  margin: 0;
+
+  font-size: 1.5rem;
+
+  color: #222222;
+}
+
+
+/* Botão fechar */
+
+.btn-fechar-modal {
+  background: none;
+  border: none;
+
+  font-size: 1.8rem;
+
+  cursor: pointer;
+
+  color: #666666;
+
+  transition: color 0.2s ease;
+}
+
+.btn-fechar-modal:hover {
+  color: #000000;
+}
+
+
+/* =========================================================
+   FORMULÁRIO
+========================================================= */
+
+.formulario {
+  display: flex;
+  flex-direction: column;
+
+  gap: 12px;
+}
+
+.formulario label {
+  font-weight: 600;
+
+  margin-bottom: -4px;
+
+  color: #333333;
+}
+
+.formulario input,
+.formulario select,
+.formulario textarea {
+  width: 100%;
+
+  padding: 10px 12px;
+
+  border: 1px solid #cccccc;
+
+  border-radius: 6px;
+
+  box-sizing: border-box;
+
+  font-size: 1rem;
+
+  background-color: #ffffff;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.formulario textarea {
+  min-height: 90px;
+  resize: vertical;
+}
+
+.formulario input:focus,
+.formulario select:focus,
+.formulario textarea:focus {
+  border-color: #7402ff;
+
+  outline: none;
+
+  box-shadow: 0 0 0 3px rgba(116, 2, 255, 0.10);
+}
+
+
+/* =========================================================
+   BOTÕES DO MODAL
+========================================================= */
+
+.modal-botoes {
+  display: flex;
+
+  gap: 10px;
+
+  justify-content: flex-end;
+
+  margin-top: 20px;
+}
+
+.btn-cancelar,
+.btn-salvar {
+  border: none;
+
+  padding: 10px 16px;
+
+  border-radius: 7px;
+
+  cursor: pointer;
+
+  font-size: 13px;
+
+  font-weight: 600;
+
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.btn-cancelar {
+  background-color: #eeeeee;
+  color: #444444;
+}
+
+.btn-cancelar:hover {
+  background-color: #dddddd;
+}
+
+.btn-salvar {
+  background-color: #7402ff;
+  color: #ffffff;
+}
+
+.btn-salvar:hover {
+  background-color: #5c00cc;
+
+  transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   NOTIFICAÇÕES
+========================================================= */
+
+.container-notificacoes {
+  position: fixed;
+
+  bottom: 20px;
+  right: 20px;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 10px;
+
+  z-index: 2000;
+
+  pointer-events: none;
+}
+
+.toast-notificacao {
+  pointer-events: auto;
+
+  background-color: #28a745;
+
+  color: white;
+
+  padding: 12px 20px;
+
+  border-radius: 7px;
+
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 15px;
+
+  min-width: 250px;
+  max-width: 350px;
+
+  animation: surgimentoSuave 0.3s ease;
+}
+
+.toast-notificacao.erro {
+  background-color: #dc3545;
+}
+
+.toast-fechar {
+  background: none;
+
+  border: none;
+
+  color: white;
+
+  font-size: 1.2rem;
+
+  cursor: pointer;
+
+  opacity: 0.8;
+}
+
+.toast-fechar:hover {
+  opacity: 1;
+}
+
+@keyframes surgimentoSuave {
+
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+}
+
+
+/* =========================================================
+   GRADE DOS SERVIÇOS
+========================================================= */
+
+.grade-servicos {
+  display: grid;
+
+  grid-template-columns:
+    repeat(auto-fill, minmax(280px, 1fr));
+
+  gap: 24px;
+
+  width: 100%;
+
+  padding: 20px 0;
+
+  box-sizing: border-box;
+}
+
+
+/* =========================================================
+   CARD DO SERVIÇO
+========================================================= */
+
+.card-servico {
+  background-color: #ffffff;
+
+  border: 1px solid #e5e5e5;
+
+  border-radius: 14px;
+
+  overflow: hidden;
+
+  display: flex;
+
+  flex-direction: column;
+
+  box-shadow:
+    0 3px 12px rgba(0, 0, 0, 0.06);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.card-servico:hover {
+  transform: translateY(-4px);
+
+  box-shadow:
+    0 8px 22px rgba(0, 0, 0, 0.10);
+}
+
+
+/* =========================================================
+   CARROSSEL
+========================================================= */
+
+.carrossel-imagens {
+  width: 100%;
+
+  margin: 0;
+}
+
+.imagem-container {
+  position: relative;
+
+  width: 100%;
+
+  height: 200px;
+
+  overflow: hidden;
+
+  background-color: #f3f3f3;
+}
+
+.card-servico:hover .imagem-servico {
+  transform: scale(1.02);
+}
+
+
+/* =========================================================
+   SEM IMAGEM
+========================================================= */
+
+.sem-imagem {
+  width: 100%;
+
+  height: 200px;
+
+  background-color: #f4f4f4;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  color: #999999;
+
+  font-size: 13px;
+}
+
+
+/* =========================================================
+   SETAS DO CARROSSEL
+========================================================= */
+
+.btn-imagem {
+  position: absolute;
+
+  top: 50%;
+
+  transform: translateY(-50%);
+
+  width: 34px;
+  height: 34px;
+
+  border: none;
+
+  border-radius: 50%;
+
+  background-color: rgba(0, 0, 0, 0.55);
+
+  color: #ffffff;
+
+  font-size: 24px;
+
+  line-height: 1;
+
+  cursor: pointer;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.btn-imagem:hover {
+  background-color: #7402ff;
+
+  transform:
+    translateY(-50%)
+    scale(1.05);
+}
+
+.btn-imagem-esquerda {
+  left: 10px;
+}
+
+.btn-imagem-direita {
+  right: 10px;
+}
+
+
+/* =========================================================
+   CONTADOR DAS IMAGENS
+========================================================= */
+
+.contador-imagem {
+  position: absolute;
+
+  bottom: 10px;
+
+  left: 50%;
+
+  transform: translateX(-50%);
+
+  padding: 4px 9px;
+
+  background-color: rgba(0, 0, 0, 0.65);
+
+  color: #ffffff;
+
+  border-radius: 12px;
+
+  font-size: 11px;
+
+  font-weight: 500;
+}
+
+
+/* =========================================================
+   INFORMAÇÕES DO SERVIÇO
+========================================================= */
+
+.informacoes-servico {
+  flex: 1;
+
+  padding: 18px 20px 10px;
+
+  box-sizing: border-box;
+}
+
+
+/* =========================================================
+   CATEGORIA
+========================================================= */
+
+.categoria-servico {
+  display: inline-block;
+
+  margin-bottom: 10px;
+
+  padding: 5px 10px;
+
+  border-radius: 20px;
+
+  font-size: 11px;
+
+  font-weight: 600;
+
+  white-space: nowrap;
+}
+
+
+/* =========================================================
+   CORES DAS CATEGORIAS
+========================================================= */
+
+.categoria-roxo {
+  background-color: #f1e8ff;
+  color: #7402ff;
+}
+
+.categoria-azul {
+  background-color: #e7f1ff;
+  color: #1769aa;
+}
+
+.categoria-verde {
+  background-color: #e8f7ee;
+  color: #218838;
+}
+
+.categoria-laranja {
+  background-color: #fff0df;
+  color: #d66a00;
+}
+
+.categoria-vermelho {
+  background-color: #fde8e8;
+  color: #d93025;
+}
+
+.categoria-rosa {
+  background-color: #fce8f3;
+  color: #c2185b;
+}
+
+.categoria-ciano {
+  background-color: #e3f8fa;
+  color: #00838f;
+}
+
+.categoria-amarelo {
+  background-color: #fff8d9;
+  color: #9a7b00;
+}
+
+
+/* =========================================================
+   DESCRIÇÃO
+========================================================= */
+
+.descricao-servico {
+  margin: 8px 0 16px;
+
+  color: #666666;
+
+  font-size: 13px;
+
+  line-height: 1.5;
+
+  display: -webkit-box;
+
+  -webkit-line-clamp: 2;
+
+  -webkit-box-orient: vertical;
+
+  overflow: hidden;
+
+  min-height: 39px;
+}
+
+
+/* =========================================================
+   PREÇO + DURAÇÃO
+========================================================= */
+
+.detalhes-servico {
+  display: flex;
+
+  justify-content: space-between;
+
+  padding: 12px 0;
+
+  border-top: 1px solid #eeeeee;
+
+  border-bottom: 1px solid #eeeeee;
+}
+
+.detalhes-servico > div {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 4px;
+}
+
+.label-detalhe {
+  color: #999999;
+
+  font-size: 10px;
+
+  font-weight: 600;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.4px;
+}
+
+.detalhes-servico strong {
+  color: #333333;
+
+  font-size: 14px;
+}
+
+.detalhes-servico .preco {
+  color: #28a745;
+
+  font-size: 16px;
+}
+
+
+/* =========================================================
+   VENDAS
+========================================================= */
+
+.vendas-servico {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  margin-top: 12px;
+
+  color: #777777;
+
+  font-size: 12px;
+}
+
+.vendas-servico strong {
+  color: #333333;
+
+  font-size: 13px;
+}
+
+
+/* =========================================================
+   BOTÕES DOS CARDS
+========================================================= */
+
+.botoes-card {
+  display: flex;
+
+  gap: 10px;
+
+  padding: 0 20px 20px;
+
+  box-sizing: border-box;
+}
+
+.botoes-card button {
+  flex: 1;
+
+  height: 36px;
+
+  border: none;
+
+  border-radius: 7px;
+
+  cursor: pointer;
+
+  font-size: 12px;
+
+  font-weight: 600;
+
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.botoes-card button:hover {
+  transform: translateY(-1px);
+}
+
+
+/* Editar */
+
+.btn-editar {
+  background-color: #7402ff;
+
+  color: #ffffff;
+}
+
+.btn-editar:hover {
+  background-color: #5c00cc;
+}
+
+
+/* Excluir */
+
+.btn-excluir {
+  background-color: #f3f3f3;
+
+  color: #dc3545;
+}
+
+.btn-excluir:hover {
+  background-color: #dc3545;
+
+  color: #ffffff;
+}
+
+
+/* =========================================================
+   SKELETON / CARREGAMENTO
+========================================================= */
+
+.esqueleto-card {
+  background-color: rgba(255, 255, 255, 0.6) !important;
+
+  border-color: rgba(255, 255, 255, 0.2) !important;
+
+  pointer-events: none;
+}
+
+.esqueleto-linha {
+  background:
+    linear-gradient(
+      90deg,
+      #e0e0e0 25%,
+      #f0f0f0 50%,
+      #e0e0e0 75%
+    );
+
+  background-size: 200% 100%;
+
+  animation:
+    pulsoEsqueleto 1.5s infinite linear,
+    piscarSuave 1.5s infinite ease-in-out;
+
+  border-radius: 4px;
+}
+
+.esqueleto-linha.titulo {
+  height: 24px;
+
+  width: 70%;
+
+  margin-bottom: 15px;
+}
+
+.esqueleto-linha.texto {
+  height: 14px;
+
+  width: 100%;
+
+  margin-bottom: 8px;
+}
+
+.esqueleto-linha.texto.curta {
+  width: 40%;
+}
+
+.esqueleto-linha.preco {
+  height: 20px;
+
+  width: 30%;
+
+  margin-top: 15px;
+}
+
+.esqueleto-botoes {
+  display: flex;
+
+  gap: 10px;
+
+  margin-top: 20px;
+}
+
+.esqueleto-botao {
+  flex: 1;
+
+  height: 34px;
+
+  background-color: #e0e0e0;
+
+  border-radius: 4px;
+
+  animation:
+    piscarSuave 1.5s infinite ease-in-out;
+}
+
+@keyframes piscarSuave {
+
+  0% {
+    opacity: 0.5;
+  }
+
+  50% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0.5;
+  }
+
+}
+
+
+/* =========================================================
+   RESPONSIVIDADE
+========================================================= */
+
+@media (max-width: 1023px) {
+
+  .grade-servicos {
+    grid-template-columns:
+      repeat(auto-fill, minmax(280px, 1fr));
+
+    gap: 18px;
+  }
+
+}
+
+
+/* =========================================================
+   CELULAR
+========================================================= */
+
+@media (max-width: 600px) {
+
+  .grade-servicos {
+    grid-template-columns: 1fr;
+
+    gap: 15px;
+
+    padding: 15px 0;
+  }
+
+  .card-servico {
+    border-radius: 10px;
+  }
+
+  .imagem-container,
+  .sem-imagem {
+    height: 190px;
+  }
+
+  .informacoes-servico {
+    padding: 16px;
+  }
+
+  .botoes-card {
+    padding:
+      0
+      16px
+      16px;
+  }
+
+  .botoes-card button {
+    height: 38px;
+
+    font-size: 13px;
+  }
+
+  .descricao-servico {
+    font-size: 13px;
+  }
+
+  .modal-overlay {
+    padding: 10px;
+  }
+
+  .modal-container {
+    padding: 20px;
+
+    max-height: 95vh;
+  }
+
+}
+
+
+/* =========================================================
+   TELAS GRANDES
+========================================================= */
+
+@media (min-width: 1024px) {
+
+  .grade-servicos {
+    grid-template-columns:
+      repeat(3, minmax(0, 1fr));
+
+    gap: 20px;
+  }
+
+}
+
+.nome-servico {
+  display: block;
+  margin: 0;
+  padding: 15px 16px 0;
+}
