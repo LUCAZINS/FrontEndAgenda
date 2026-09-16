@@ -11,10 +11,10 @@ import { AuthService, AuthStatus } from '../../../auth/auth';
 import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import { GoogleService } from '../../../../service/google-service';
-import { ProfissionalService } from '../../../../service/profissional-service';
+import { GoogleService } from '../../../../service/googleservice';
+import { ProfissionalService } from '../../../../service/profissionalservice';
 import { Agendamento, AgendamentoprofissionalService } from '../../../../service/AgendamentoprofissionalService';
-
+import { SignalrService } from '../../../../service/SingnalService';
 @Component({
   selector: 'app-home-pages',
   standalone: true,
@@ -30,50 +30,148 @@ export class HomePages implements OnInit {
   imagemUrlLogo: string | null = null;
   imagemUrlBanner: string | null = null;
 
+get agendamentosHoje() {
+  return this.AgendamentoprofissionalService.agendamentosHoje;
+}
 
-  constructor(
-    private http: HttpClient, 
+   constructor(
+    private http: HttpClient,
     private googleService: GoogleService,
-    private cdr: ChangeDetectorRef, 
-    private authService: AuthService, 
+    private cdr: ChangeDetectorRef,
+    private authService: AuthService,
     private router: Router,
     public AgendamentoprofissionalService: AgendamentoprofissionalService,
-    private ProfissionalService: ProfissionalService
+    private ProfissionalService: ProfissionalService,
+    private signalrService: SignalrService
   ) {}
-  agendamentosHoje = computed(() => {
-  const hoje = new Date();
 
-  return this.AgendamentoprofissionalService.agendamentos().filter(agendamento => {
-    const dataAgendamento = new Date(agendamento.dataInicio);
+   async ngOnInit(): Promise<void> {
 
-    return (
-      dataAgendamento.getFullYear() === hoje.getFullYear() &&
-      dataAgendamento.getMonth() === hoje.getMonth() &&
-      dataAgendamento.getDate() === hoje.getDate()
-    );
-  });
-});
-  ngOnInit(): void {
-    this.carregarStatusUsuario();
-    this.carregarProfissional();
-    this.AgendamentoprofissionalService.BuscarServicosDeHoje().subscribe({
-        error: erro => {
-          console.error('Erro ao buscar agendamentos de hoje:', erro);
-        }
-      });
+  console.log('🏠 HOME INICIOU');
+
+  this.carregarStatusUsuario();
+  this.carregarProfissional();
+
+  // Busca os agendamentos de hoje ao abrir a Home
+  this.AgendamentoprofissionalService
+    .BuscarServicosDeHoje()
+    .subscribe({
+      next: dados => {
+        console.log('Agendamentos de hoje:', dados);
+      },
+      error: erro => {
+        console.error('Erro ao buscar agendamentos de hoje:', erro);
       }
+    });
 
 
-    buscarServicosDeHoje(): void {
-      this.AgendamentoprofissionalService.BuscarServicosDeHoje().subscribe({
+  // ============================
+  // SIGNALR
+  // ============================
+
+  try {
+
+    await this.signalrService.iniciarConexao();
+
+    console.log('🟢 SignalR conectado na Home');
+
+
+    // NOVO AGENDAMENTO
+    this.signalrService.ouvirNovoAgendamento(agendamento => {
+
+      console.log(
+        '🟢 Novo agendamento recebido na Home:',
+        agendamento
+      );
+
+      this.AgendamentoprofissionalService
+        .adicionarNoCache(agendamento);
+
+    });
+
+
+    // STATUS ALTERADO
+    this.signalrService.ouvirStatusAlterado(dados => {
+
+      console.log(
+        '🟡 Status alterado:',
+        dados
+      );
+
+      this.AgendamentoprofissionalService
+        .atualizarStatusNoCache(
+          dados.id,
+          dados.statusAgendamento
+        );
+
+    });
+
+
+    // AGENDAMENTO DELETADO
+    this.signalrService.ouvirDeletaragendameneto(id => {
+
+      console.log(
+        '🔴 Agendamento deletado:',
+        id
+      );
+
+      this.AgendamentoprofissionalService
+        .removerDoCache(id);
+
+    });
+
+
+    // AGENDAMENTO ATUALIZADO
+    this.signalrService.ouvirAgendamentoAtualizado(agendamento => {
+
+      console.log(
+        '🔵 Agendamento atualizado:',
+        agendamento
+      );
+
+      this.AgendamentoprofissionalService
+        .atualizarNoCache(agendamento);
+
+    });
+
+
+  } catch (erro) {
+
+    console.error(
+      '❌ Erro ao iniciar SignalR na Home:',
+      erro
+    );
+
+  }
+
+}
+
+    buscarAgendamentosDeHoje(): void {
+
+    this.AgendamentoprofissionalService
+      .BuscarServicosDeHoje()
+      .subscribe({
+
         next: (agendamentos) => {
-          console.log('Agendamentos de hoje:', agendamentos);
+
+          console.log(
+            'Agendamentos de hoje no componente:',
+            agendamentos
+          );
+
         },
+
         error: (erro) => {
-          console.error('Erro ao buscar agendamentos de hoje:', erro);
+
+          console.error(
+            'Erro ao buscar agendamentos de hoje:',
+            erro
+          );
+
         }
+
       });
-    }
+  }
 
   carregarProfissional(): void {
   this.ProfissionalService.buscarProfissional().subscribe({
@@ -127,8 +225,8 @@ export class HomePages implements OnInit {
 mostrarBarraAgendamentos(): boolean {
   console.log('URL atual:', this.router.url);
 
-  return this.router.url.includes('/Auth/login/Profissional/home') &&
-         !this.router.url.includes('/Auth/login/Profissional/servicos') &&
+  return this.router.url.includes('/Auth/Profissional/home') &&
+         !this.router.url.includes('/Auth/Profissional/servicos') &&
          !this.router.url.includes('/agendamentos');
 }
   logout(): void {

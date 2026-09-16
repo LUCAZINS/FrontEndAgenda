@@ -1,196 +1,857 @@
 <h1>Agendamentos do profissional</h1>
 
-<section class="formulario">
-  <h2>Criar agendamento</h2>
+<div class="agenda-container">
 
-  <label for="clienteId">ID do cliente</label>
+  <!-- ========================= -->
 
-  <input
-    id="clienteId"
-    type="number"
-    name="clienteId"
-    [(ngModel)]="novoAgendamento.clienteId"
-    min="1"
-  />
+  <!-- CABEÇALHO -->
 
-  <label for="servicoId">ID do serviço</label>
+  <!-- ========================= -->
 
-  <input
-    id="servicoId"
-    type="number"
-    name="servicoId"
-    [(ngModel)]="novoAgendamento.servicoId"
-    min="1"
-  />
+<div class="agenda-header">
 
-  <label for="dataInicio">Data e horário</label>
 
-  <input
-    id="dataInicio"
-    type="datetime-local"
-    name="dataInicio"
-    [(ngModel)]="novoAgendamento.dataInicio"
-  />
+<div class="agenda-titulo">
 
-  <label for="observacoes">Observações</label>
+  <h2>Agendamentos</h2>
 
-  <textarea
-    id="observacoes"
-    name="observacoes"
-    [(ngModel)]="novoAgendamento.observacoes"
-  ></textarea>
+  <span>
+    {{ dataFormatada() }}
+  </span>
 
-  <label for="status">Status</label>
+</div>
 
-  <select
-    id="status"
-    name="status"
-    [(ngModel)]="novoAgendamento.status"
-  >
-    <option value="Ativo">Ativo</option>
-    <option value="Pendente">Pendente</option>
-    <option value="Confirmado">Confirmado</option>
-  </select>
 
-  <button type="button" (click)="criarAgendamento()">
-    Criar agendamento
-  </button>
-</section>
+<!-- NAVEGAÇÃO -->
 
-<hr />
+<div class="agenda-navegacao">
 
-<section>
-  <h2>Agendamentos cadastrados</h2>
+  <button
+    type="button"
+    class="btn-navegacao"
+    (click)="voltarDia()">
 
-  <button type="button" (click)="mostrarAgendamentos()">
-    Atualizar lista
+    ‹
+
   </button>
 
-  @for (agendamento of agendamentos(); track agendamento.id) {
-    <div class="agendamento">
-      <p>
-        <strong>ID:</strong>
-        {{ agendamento.id }}
-      </p>
 
-      <p>
-        <strong>Cliente:</strong>
-        {{ agendamento.cliente?.nome || agendamento.clienteId }}
-      </p>
+  <button
+    type="button"
+    class="btn-hoje"
+    (click)="irParaHoje()">
 
-      <p>
-        <strong>Serviço:</strong>
-        {{ agendamento.servico?.nome || agendamento.servicoId }}
-      </p>
-      <p>
-        <strong>Preço R$</strong>
-        {{ agendamento.servico.preco  }}
-      </p>
-      
-      <p>
-        <strong>Data:</strong>
-        {{ agendamento.dataInicio | date: 'dd/MM/yyyy HH:mm' }}
-      </p>
-        <p>
-        <strong>Data prevista para finalizar:</strong>
-        {{ agendamento.dataFim | date: 'dd/MM/yyyy HH:mm' }}
-      </p>
+    Hoje
 
-      
-      <p>
-        <strong>Status:</strong>
-        {{
-          agendamento.statusAgendamento 
-        }}
-      </p>
+  </button>
 
-      <p>
-        <strong>Observações:</strong>
-        {{ agendamento.observacoes }}
-      </p>
-      <button
-        type="button"
-        (click)="prepararEdicao(agendamento)"
-      >
-        Editar
-      </button>
 
-      <button
-        type="button"
-        (click)="cancelarAgendamento(agendamento.id)"
-      >
-        Cancelar
-      </button>
+  <label class="btn-calendario">
 
-      <button
-        type="button"
-        (click)="reativarAgendamento(agendamento.id)"
-      >
-        Reativar
-      </button>
-
-      <button
-        type="button"
-        (click)="deletarAgendamento(agendamento.id)"
-      >
-        Deletar
-      </button>
-    </div>
-  } @empty {
-    <p>Nenhum agendamento encontrado.</p>
-  }
-</section>
-
-@if (agendamentoEdicao.id) {
-  <hr />
-
-  <section class="formulario">
-    <h2>
-      Editar agendamento #{{ agendamentoEdicao.id }}
-    </h2>
-
-    <label for="editarDataInicio">
-      Data e horário
-    </label>
+    📅
 
     <input
-      id="editarDataInicio"
-      type="datetime-local"
-      name="editarDataInicio"
-      [(ngModel)]="agendamentoEdicao.dataInicio"
+      type="date"
+      [value]="
+        dataSelecionada()
+          | date:'yyyy-MM-dd'
+      "
+      (change)="selecionarData($event)"
     />
 
-    <label for="editarObservacoes">
-      Observações
-    </label>
+  </label>
 
-    <textarea
-      id="editarObservacoes"
-      name="editarObservacoes"
-      [(ngModel)]="agendamentoEdicao.observacoes"
-    ></textarea>
 
-    <label for="editarStatus">
-      Status
-    </label>
+  <button
+    type="button"
+    class="btn-navegacao"
+    (click)="avancarDia()">
 
-    <select
-      id="editarStatus"
-      name="editarStatus"
-      [(ngModel)]="agendamentoEdicao.statusAgendamento"
-    >
-      <option value="Ativo">Ativo</option>
-      <option value="Pendente">Pendente</option>
-      <option value="Confirmado">Confirmado</option>
-      <option value="Cancelado">Cancelado</option>
-    </select>
+    ›
 
-    <button type="button" (click)="editarAgendamento()">
-      Salvar alterações
-    </button>
+  </button>
 
-    <button type="button" (click)="limparFormularioEdicao()">
-      Fechar
-    </button>
-  </section>
+</div>
+
+
+<!-- VISUALIZAÇÃO -->
+
+<div class="agenda-visualizacao">
+
+  <button
+    type="button"
+    [class.ativo]="
+      modoVisualizacao() === 'agenda'
+    "
+    (click)="
+      alterarVisualizacao('agenda')
+    ">
+
+    ▦ Agenda
+
+  </button>
+
+
+  <button
+    type="button"
+    [class.ativo]="
+      modoVisualizacao() === 'lista'
+    "
+    (click)="
+      alterarVisualizacao('lista')
+    ">
+
+    ☷ Lista
+
+  </button>
+
+</div>
+
+
+<!-- CRIAR -->
+
+<button
+  type="button"
+  class="btn-criar-agendamento"
+  (click)="abrirModalAgendamento()">
+
+  + 
+
+</button>
+</div>
+
+@if (carregandoAgendamentos()) {
+  <div class="loading-agendamentos">
+    <div class="loading-spinner"></div>
+
+    <div class="loading-texto">
+      <strong>Carregando agendamentos</strong>
+      <span>Estamos buscando seus horários...</span>
+    </div>
+  </div>
+} 
+@else 
+{
+  <!-- ========================= -->
+
+  <!-- VISUALIZAÇÃO AGENDA -->
+
+  <!-- ========================= -->
+
+  @if (modoVisualizacao() === 'agenda') {
+
+
+  <div class="visualizacao-agenda">
+
+    <div class="agenda-grid">
+
+      <div class="cabecalho-horarios"></div>
+
+
+      <div class="cabecalho-dia">
+
+        {{ dataSelecionada() | date:'EEEE, dd/MM' }}
+
+      </div>
+
+
+      <!-- HORÁRIOS -->
+
+      <div class="coluna-horarios">
+
+        @for (
+          hora of horarios;
+          track hora
+        ) {
+
+          <div class="horario">
+
+            {{ hora.toString().padStart(2, '0') }}:00
+
+          </div>
+
+        }
+
+      </div>
+
+
+      <!-- GRADE -->
+
+      <div class="coluna-dia">
+
+        <div class="grade-horarios">
+
+          @for (
+            hora of horarios;
+            track hora
+          ) {
+
+            <div
+              class="linha-horario">
+            </div>
+
+          }
+
+
+          <!-- AGENDAMENTOS -->
+
+          @for (
+            agendamento of agendamentosDoDia();
+            track agendamento.id
+          ) {
+
+            <div
+              class="agendamento-card"
+
+              [style.top.px]="
+                calcularTop(agendamento)
+              "
+
+              [style.height.px]="
+                calcularAltura(agendamento)
+              "
+            >
+
+              <strong>
+
+                {{
+                  agendamento.servico?.nome
+                    || 'Serviço'
+                }}
+
+              </strong>
+
+
+              <span>
+
+                {{
+                  agendamento.cliente?.nome
+                    || 'Cliente'
+                }}
+
+              </span>
+
+
+              <small>
+
+                {{
+                  agendamento.dataInicio
+                    | date:'HH:mm'
+                }}
+
+                -
+
+                {{
+                  agendamento.dataFim
+                    | date:'HH:mm'
+                }}
+
+              </small>
+
+            </div>
+
+          }
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  }
+
+    <!-- ========================= -->
+
+    <!-- VISUALIZAÇÃO LISTA -->
+
+    <!-- ========================= -->
+
+  @if (modoVisualizacao() === 'lista') {
+
+
+  <div class="visualizacao-lista">
+
+    <div class="lista-header">
+
+      <div>
+
+        <h3>Agendamentos</h3>
+
+        <span>
+
+          {{ agendamentosFiltrados().length }}
+
+          {{
+            agendamentosFiltrados().length === 1
+              ? 'agendamento'
+              : 'agendamentos'
+          }}
+
+        </span>
+
+      </div>
+
+
+      <div class="lista-acoes">
+
+        <button
+          class="btn-lista ativo"
+          type="button">
+
+          Todos
+
+        </button>
+
+
+        <button
+          class="btn-lista"
+          type="button">
+
+          Filtrar
+
+        </button>
+
+      </div>
+
+    </div>
+
+
+    <!-- FILTROS -->
+
+    <div class="lista-filtros">
+
+      <!-- BUSCA -->
+
+      <div
+        class="campo-filtro busca">
+
+        <label>
+          Buscar
+        </label>
+
+        <input
+          type="text"
+          placeholder="Cliente, serviço ou observação..."
+          [value]="busca()"
+          (input)="
+            busca.set(
+              $any($event.target).value
+            )
+          "
+        />
+
+      </div>
+
+
+      <!-- STATUS -->
+
+      <div class="campo-filtro">
+
+        <label>
+          Status
+        </label>
+
+        <select
+          [value]="filtroStatus()"
+          (change)="
+            filtroStatus.set(
+              $any($event.target).value
+            )
+          ">
+
+          <option value="Todos">
+            Todos
+          </option>
+
+          <option value="Ativo">
+            Ativo
+          </option>
+
+          <option value="Confirmado">
+            Confirmado
+          </option>
+
+          <option value="Concluído">
+            Concluído
+          </option>
+
+          <option value="Cancelado">
+            Cancelado
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <!-- CLIENTE -->
+
+      <div class="campo-filtro">
+
+        <label>
+          Cliente
+        </label>
+
+        <select
+          [value]="
+            filtroCliente() ?? ''
+          "
+          (change)="
+            filtroCliente.set(
+              $any($event.target).value
+                ? +$any($event.target).value
+                : null
+            )
+          "
+        >
+
+          <option value="">
+            Todos
+          </option>
+
+          @for (
+            cliente of clientesFiltro();
+            track cliente.id
+          ) {
+
+            <option
+              [value]="cliente.id">
+
+              {{ cliente.nome }}
+
+            </option>
+
+          }
+
+        </select>
+
+      </div>
+
+
+      <!-- SERVIÇO -->
+
+      <div class="campo-filtro">
+
+        <label>
+          Serviço
+        </label>
+
+        <select
+          [value]="
+            filtroServico() ?? ''
+          "
+          (change)="
+            filtroServico.set(
+              $any($event.target).value
+                ? +$any($event.target).value
+                : null
+            )
+          "
+        >
+
+          <option value="">
+            Todos
+          </option>
+
+          @for (
+            servico of servicosFiltro();
+            track servico.id
+          ) {
+
+            <option
+              [value]="servico.id">
+
+              {{ servico.nome }}
+
+            </option>
+
+          }
+
+        </select>
+
+      </div>
+
+
+      <!-- DATA -->
+
+      <div class="campo-filtro">
+
+        <label>
+          Data
+        </label>
+
+        <input
+          type="date"
+          [value]="filtroData()"
+          (change)="
+            filtroData.set(
+              $any($event.target).value
+            )
+          "
+        />
+
+      </div>
+
+
+      <!-- ORDENAÇÃO -->
+
+      <div class="campo-filtro">
+
+        <label>
+          Ordenar
+        </label>
+
+        <select
+          [value]="ordenacao()"
+          (change)="
+            alterarOrdenacao($event)
+          "
+        >
+
+          <option value="dataAsc">
+            Mais antigos primeiro
+          </option>
+
+          <option value="dataDesc">
+            Mais recentes primeiro
+          </option>
+
+        </select>
+
+      </div>
+
+    </div>
+
+
+    <!-- LISTA VAZIA -->
+
+    @if (
+      agendamentosFiltrados().length === 0
+    ) {
+
+      <div class="lista-vazia">
+
+        <div class="lista-vazia-icone">
+          📅
+        </div>
+
+        <strong>
+          Nenhum agendamento encontrado
+        </strong>
+
+        <span>
+          Tente alterar os filtros utilizados.
+        </span>
+
+      </div>
+
+    }
+
+    @else {
+
+      <!-- AGENDAMENTOS -->
+
+      <div class="lista-agendamentos">
+
+        @for (
+          agendamento of agendamentosFiltrados();
+          track agendamento.id
+        ) {
+
+          <div class="item-agendamento">
+
+            <!-- DATA -->
+
+            <div class="data-agendamento">
+
+              <strong>
+
+                {{
+                  agendamento.dataInicio
+                    | date:'dd/MM'
+                }}
+
+              </strong>
+
+              <span>
+
+                {{
+                  agendamento.dataInicio
+                    | date:'yyyy'
+                }}
+
+              </span>
+
+            </div>
+
+
+            <!-- HORÁRIO -->
+
+            <div class="horario-agendamento">
+
+              <strong>
+
+                {{
+                  agendamento.dataInicio
+                    | date:'HH:mm'
+                }}
+
+              </strong>
+
+              <span>
+
+                {{
+                  agendamento.dataFim
+                    | date:'HH:mm'
+                }}
+
+              </span>
+
+            </div>
+
+
+            <div
+              class="linha-agendamento">
+            </div>
+
+
+            <!-- INFORMAÇÕES -->
+
+            <div class="info-agendamento">
+
+              <strong>
+
+                {{
+                  agendamento.servico?.nome
+                    || 'Serviço'
+                }}
+
+              </strong>
+
+              <span>
+
+                {{
+                  agendamento.cliente?.nome
+                    || 'Cliente'
+                }}
+
+              </span>
+
+
+              @if (
+                agendamento.observacoes
+              ) {
+
+                <small>
+
+                  {{ agendamento.observacoes }}
+
+                </small>
+
+              }
+
+            </div>
+
+
+            <!-- STATUS -->
+
+            <div
+              class="status-agendamento"
+
+              [class.cancelado]="
+                agendamento.statusAgendamento
+                  === 'Cancelado'
+              "
+            >
+
+              {{
+                agendamento.statusAgendamento
+              }}
+
+            </div>
+
+          </div>
+
+        }
+
+      </div>
+
+    }
+
+  </div>
+
+
+  }
+
+}
+
+</div>
+
+<!-- ================================================= -->
+
+<!-- MODAL DE CRIAÇÃO -->
+
+<!-- ================================================= -->
+
+@if (modalAgendamentoAberto()) {
+  <div class="modal-overlay" (click)="fecharModalAgendamento()">
+
+    <div class="modal-container" (click)="$event.stopPropagation()">
+
+      <div class="modal-header">
+        <div>
+          <h2>Novo agendamento</h2>
+          <p>Preencha os dados do agendamento.</p>
+        </div>
+
+        <button
+          type="button"
+          class="modal-fechar"
+          (click)="fecharModalAgendamento()">
+          ×
+        </button>
+      </div>
+
+      <div class="modal-body">
+
+        <!-- Cliente -->
+        <div class="campo-autocomplete">
+          <label>Cliente</label>
+
+          <input
+            type="text"
+            placeholder="Digite o nome do cliente..."
+            [value]="clienteBusca()"
+            (input)="buscarCliente($event)"
+            autocomplete="off"
+          >
+
+          @if (
+            clienteBusca().length >= 2 &&
+            clientesSugestoes().length > 0
+          ) {
+            <div class="sugestoes-clientes">
+              @for (
+                cliente of clientesSugestoes();
+                track cliente.clienteId
+              ) {
+                <button
+                  type="button"
+                  class="sugestao-cliente"
+                  (click)="selecionarCliente(cliente)"
+                >
+                  <span>👤</span>
+                  <strong>{{ cliente.nome }}</strong>
+                </button>
+              }
+            </div>
+          }
+
+          @if (
+            clienteBusca().length >= 2 &&
+            clientesSugestoes().length === 0 &&
+            clienteSelecionado() === null
+          ) {
+            <div class="sem-clientes">
+              Nenhum cliente encontrado.
+            </div>
+          }
+        </div>
+
+
+        <!-- Serviço -->
+        <div class="campo-autocomplete">
+          <label>Serviço</label>
+
+          <input
+            type="text"
+            placeholder="Digite o nome do serviço..."
+            [value]="servicoBusca()"
+            (input)="buscarServico($event)"
+            autocomplete="off"
+          >
+
+          @if (
+            servicoBusca().length >= 2 &&
+            servicosSugestoes().length > 0
+          ) {
+            <div class="sugestoes-clientes">
+              @for (
+                servico of servicosSugestoes();
+                track servico.servicoId
+              ) {
+                <button
+                  type="button"
+                  class="sugestao-cliente"
+                  (click)="selecionarServico(servico)"
+                >
+                  <span>⚙️</span>
+                  <strong>{{ servico.nome }}</strong>
+                </button>
+              }
+            </div>
+          }
+
+          @if (
+            servicoBusca().length >= 2 &&
+            servicosSugestoes().length === 0 &&
+            servicoSelecionado() === null
+          ) {
+            <div class="sem-clientes">
+              Nenhum serviço encontrado.
+            </div>
+          }
+        </div>
+
+
+        <!-- Data -->
+        <div class="campo">
+          <label>Data e horário</label>
+
+          <input
+            type="datetime-local"
+            [(ngModel)]="novoAgendamento.dataInicio"
+          >
+        </div>
+
+
+        <!-- Observações -->
+        <div class="campo">
+          <label>Observações</label>
+
+          <textarea
+            [(ngModel)]="novoAgendamento.observacoes"
+            placeholder="Observações do agendamento..."
+            rows="4">
+          </textarea>
+        </div>
+
+
+
+      </div>
+
+
+      <div class="modal-footer">
+
+        <button
+          type="button"
+          class="btn-cancelar"
+          (click)="fecharModalAgendamento()">
+          Cancelar
+        </button>
+
+        <button
+          type="button"
+          class="btn-criar"
+          (click)="criarAgendamento()">
+          Criar agendamento
+        </button>
+
+      </div>
+
+    </div>
+  </div>
 }

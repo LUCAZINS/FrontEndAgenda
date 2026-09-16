@@ -16,29 +16,45 @@ export const routes: Routes = [
 //     canActivate: [authGuard]
 //   },
   {
-    path:'Auth/login/Profissional/home',
-    loadComponent: () =>
-      import('./shared/pages/home-pages/home-pages')
-        .then(m => m.HomePages),
-    canActivate: [authGuard],
-    children: [
-      {
-        path: 'servicos',
-        loadComponent: () =>
-          import('./shared/component/ServicoProfissional/servicocomponent/servicocomponent')
-            .then(m => m.Servicocomponent),
-      },{
-        path: 'agendamentos',
-        loadComponent: () =>
-          import('./shared/component/AgendamentoProfissional/profissionalcomponent')
-            .then(m => m.Profissionalcomponent),
-      },
+  path: 'Auth/Profissional/home',
+  loadComponent: () =>
+    import('./shared/pages/home-pages/home-pages')
+      .then(m => m.HomePages),
 
-    ]
+  canActivate: [authGuard],
 
+  children: [
 
+    {
+      path: 'servicos',
+      loadComponent: () =>
+        import('./shared/component/ServicoProfissional/servicocomponent/servicocomponent')
+          .then(m => m.Servicocomponent),
+    },
 
-  },
+    {
+      path: 'agendamentos',
+      loadComponent: () =>
+        import('./shared/component/AgendamentoProfissional/profissionalcomponent')
+          .then(m => m.Profissionalcomponent),
+    },
+
+    {
+      path: 'Perfil',
+      loadComponent: () =>
+        import('./shared/component/perfil-prof-component/perfil-prof-component')
+          .then(m => m.PerfilProfComponent),
+    },
+
+    {
+      path: 'clientes',
+      loadComponent: () =>
+        import('./shared/component/cliente-components/clienteComponents')
+          .then(m => m.ClienteComponents),
+    }
+
+  ]
+},
 
 
   {

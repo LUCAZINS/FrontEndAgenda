@@ -18,7 +18,6 @@
 
   <div class="titulo-servicos">
     <div>
-      <span class="subtitulo-servicos">GERENCIAMENTO</span>
 
       <h2>Meus serviços</h2>
 
@@ -27,16 +26,7 @@
       </p>
     </div>
 
-    @if (!exibirFormulario) {
-      <button
-        type="button"
-        class="btn-criar-novo"
-        (click)="exibirFormulario = true"
-      >
-        <span class="icone-plus">+</span>
-        Criar novo serviço
-      </button>
-    }
+
   </div>
 
 
@@ -44,10 +34,6 @@
 
     <!-- PESQUISA -->
     <div class="filtro-grupo filtro-pesquisa">
-
-      <label for="buscaNome">
-        Pesquisar serviço
-      </label>
 
       <div class="campo-pesquisa">
 
@@ -158,9 +144,11 @@
 
 </div>
 
-  <div class="grade-servicos">
+<div class="grade-servicos">
+
     @for (servico of servicosFiltrados(); track servico.id) {
-<div class="card-servico">
+    <button style="border: none;" class="ButtonLinkService" routerLink="/localhost">
+      <div class="card-servico">
 
   <!-- IMAGENS -->
   @if (servico.imagens?.length > 0) {
@@ -279,8 +267,10 @@
 
   </div>
 
-</div>
-    }
+    </div>
+    </button>
+}
+   
   </div>
 
   @if (servicoEmEdicaoId !== null) {
@@ -474,17 +464,7 @@
         class="modal-container"
         (click)="$event.stopPropagation()"
       >
-        <div class="modal-header">
-          <h2>Criar Novo Serviço</h2>
 
-          <button
-            type="button"
-            class="btn-fechar-modal"
-            (click)="exibirFormulario = false"
-          >
-            ×
-          </button>
-        </div>
 
         <section class="formulario">
           <label for="nome">Nome do Serviço</label>
@@ -584,6 +564,27 @@
           </div>
         </section>
       </div>
+      
+
     </div>
+
+        
   }
+
+
+      @if (!exibirFormulario) {
+
+        <button
+          type="button"
+          class="btn-fechar-modal"
+          (click)="exibirFormulario = false">
+        
+        </button>
+      <button
+        type="button"
+        class="btn-criar-novo"
+        (click)="exibirFormulario = true">
+        <span class="icone-plus">+</span>
+      </button>
+    }
 }

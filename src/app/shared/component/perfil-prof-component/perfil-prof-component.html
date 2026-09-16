@@ -1,0 +1,755 @@
+<div class="perfil-container">
+
+  @if (carregando) {
+
+    <div class="carregando">
+      Carregando perfil...
+    </div>
+
+  } @else if (erro) {
+
+    <div class="erro">
+      {{ erro }}
+    </div>
+
+  } @else if (profissional) {
+
+    <div
+      class="pagina-perfil"
+      [style.background-image]="
+        profissional?.imagemUrlBanner
+          ? 'url(' + profissional.imagemUrlBanner + ')'
+          : 'none'
+      "
+    >
+
+      <div class="conteudo-pagina">
+
+        <!-- =====================================================
+             CABEÇALHO DO PERFIL
+        ====================================================== -->
+
+        <div class="cabecalho-perfil">
+
+          <!-- ===================================================
+               BANNER
+          ==================================================== -->
+
+          @if (editando) {
+
+            <div
+              class="banner-editavel"
+              (click)="inputBanner.click()"
+            >
+
+              <div class="overlay-banner">
+                <span>📷</span>
+
+                <span>
+                  Clique para alterar o banner
+                </span>
+              </div>
+
+              <input
+                #inputBanner
+                type="file"
+                accept="image/*"
+                hidden
+                (change)="selecionarBanner($event)"
+              >
+
+            </div>
+
+          }
+
+          <!-- ===================================================
+               FOTO DO PROFISSIONAL
+          ==================================================== -->
+
+          <div class="foto-container">
+
+            @if (editando) {
+
+              <label class="imagem-editavel foto-editavel">
+
+                @if (previewFoto) {
+
+                  <img
+                    [src]="previewFoto"
+                    alt="Foto do profissional"
+                    class="foto-perfil"
+                  >
+
+                } @else if (profissional.imagemUrlPerfil) {
+
+                  <img
+                    [src]="profissional.imagemUrlPerfil"
+                    alt="Foto do profissional"
+                    class="foto-perfil"
+                  >
+
+                } @else {
+
+                  <div class="foto-sem-imagem">
+                    {{ profissional.nome?.charAt(0) }}
+                  </div>
+
+                }
+
+                <div class="overlay-imagem">
+
+                  <span>📷</span>
+
+                  <small>
+                    Clique para alterar
+                  </small>
+
+                </div>
+
+                <input
+                  type="file"
+                  accept="image/*"
+                  hidden
+                  (change)="selecionarFoto($event)"
+                >
+
+              </label>
+
+            } @else {
+
+              @if (profissional.imagemUrlPerfil) {
+
+                <img
+                  [src]="profissional.imagemUrlPerfil"
+                  alt="Foto do profissional"
+                  class="foto-perfil"
+                >
+
+              } @else {
+
+                <div class="foto-sem-imagem">
+                  {{ profissional.nome?.charAt(0) }}
+                </div>
+
+              }
+
+            }
+
+          </div>
+
+          <!-- ===================================================
+               NOME E ESPECIALIDADE
+          ==================================================== -->
+
+          <div class="informacoes-principais">
+
+            <h1>
+              {{ profissional.nome }}
+            </h1>
+
+            @if (profissional.especialidade) {
+
+              <span class="especialidade">
+                {{ profissional.especialidade }}
+              </span>
+
+            }
+
+          </div>
+
+        </div>
+
+
+        <!-- =====================================================
+             INFORMAÇÕES PESSOAIS
+        ====================================================== -->
+
+        <div class="dados-perfil">
+
+          <h2>
+            Informações pessoais
+          </h2>
+
+          <!-- ===================================================
+               NOME
+          ==================================================== -->
+
+          <div class="campo">
+
+            <label>
+              Nome
+            </label>
+
+            @if (editando) {
+
+              <input
+                type="text"
+                [(ngModel)]="formulario.nome"
+              >
+
+            } @else {
+
+              <span>
+                {{ profissional.nome }}
+              </span>
+
+            }
+
+          </div>
+
+
+          <!-- ===================================================
+               E-MAIL
+          ==================================================== -->
+
+          <div class="campo">
+
+            <label>
+              E-mail
+            </label>
+
+            @if (editando) {
+
+              <input
+                type="email"
+                [(ngModel)]="formulario.email"
+                disabled
+                class="campo-bloqueado"
+              >
+
+              <small class="mensagem-email-bloqueado">
+                O e-mail não pode ser alterado por aqui.
+                Para solicitar a alteração, entre em contato
+                com o suporte.
+              </small>
+
+            } @else {
+
+              <span>
+                {{ profissional.email }}
+              </span>
+
+            }
+
+          </div>
+
+
+          <!-- ===================================================
+               TELEFONE
+          ==================================================== -->
+
+          <div class="campo">
+
+            <label>
+              Telefone
+            </label>
+
+            @if (editando) {
+
+              <input
+                type="text"
+                [(ngModel)]="formulario.telefone"
+              >
+
+            } @else {
+
+              <span>
+                {{ profissional.telefone || 'Não informado' }}
+              </span>
+
+            }
+
+          </div>
+
+
+          <!-- ===================================================
+               ESPECIALIDADE
+          ==================================================== -->
+
+          <div class="campo">
+
+            <label>
+              Especialidade
+            </label>
+
+            @if (editando) {
+
+              <input
+                type="text"
+                [(ngModel)]="formulario.especialidade"
+              >
+
+            } @else {
+
+              <span>
+                {{ profissional.especialidade || 'Não informado' }}
+              </span>
+
+            }
+
+          </div>
+
+
+          <!-- ===================================================
+               HORÁRIO DE ATENDIMENTO
+          ==================================================== -->
+
+          <div class="secao-perfil">
+
+            <h2>
+              Horário de atendimento
+            </h2>
+
+            <div class="campo">
+
+              <label>
+                Hora de abertura
+              </label>
+
+              @if (editando) {
+
+                <input
+                  type="time"
+                  [(ngModel)]="formulario.horaAbertura"
+                >
+
+              } @else {
+
+                <span>
+                  {{ profissional.horaAbertura || 'Não informado' }}
+                </span>
+
+              }
+
+            </div>
+
+
+            <div class="campo">
+
+              <label>
+                Hora de fechamento
+              </label>
+
+              @if (editando) {
+
+                <input
+                  type="time"
+                  [(ngModel)]="formulario.horaFechamento"
+                >
+
+              } @else {
+
+                <span>
+                  {{ profissional.horaFechamento || 'Não informado' }}
+                </span>
+
+              }
+
+            </div>
+
+          </div>
+
+
+          <!-- ===================================================
+               REDES SOCIAIS
+          ==================================================== -->
+
+          <div class="secao-perfil">
+
+            <h2>
+              Redes sociais
+            </h2>
+
+            <div class="campo">
+
+              <label>
+                Instagram
+              </label>
+
+              @if (editando) {
+
+                <input
+                  type="text"
+                  [(ngModel)]="formulario.instagram"
+                  placeholder="@seuinstagram"
+                >
+
+              } @else {
+
+                <span>
+                  {{ profissional.instagram || 'Não informado' }}
+                </span>
+
+              }
+
+            </div>
+
+
+            <div class="campo">
+
+              <label>
+                Facebook
+              </label>
+
+              @if (editando) {
+
+                <input
+                  type="text"
+                  [(ngModel)]="formulario.facebook"
+                  placeholder="Nome da página"
+                >
+
+              } @else {
+
+                <span>
+                  {{ profissional.facebook || 'Não informado' }}
+                </span>
+
+              }
+
+            </div>
+
+
+            <div class="campo">
+
+              <label>
+                Twitter / X
+              </label>
+
+              @if (editando) {
+
+                <input
+                  type="text"
+                  [(ngModel)]="formulario.twitter"
+                  placeholder="@seuusuario"
+                >
+
+              } @else {
+
+                <span>
+                  {{ profissional.twitter || 'Não informado' }}
+                </span>
+
+              }
+
+            </div>
+
+          </div>
+
+
+          <!-- ===================================================
+               ENDEREÇO
+          ==================================================== -->
+
+          <div class="secao-perfil">
+
+            <h2>
+              Endereço
+            </h2>
+
+            <div class="campo">
+
+              <label>
+                Endereço
+              </label>
+
+              @if (editando) {
+
+                <input
+                  type="text"
+                  [(ngModel)]="formulario.endereco"
+                  placeholder="Rua, número, bairro..."
+                >
+
+              } @else {
+
+                <span>
+                  {{ profissional.endereco || 'Não informado' }}
+                </span>
+
+              }
+
+            </div>
+
+          </div>
+
+
+          <!-- ===================================================
+               LINKS
+          ==================================================== -->
+
+          <div class="secao-perfil">
+
+            <h2>
+              Links
+            </h2>
+
+            <div class="campo">
+
+              <label>
+                Link do Instagram
+              </label>
+
+              @if (editando) {
+
+                <input
+                  type="url"
+                  [(ngModel)]="formulario.linkInstagram"
+                  placeholder="https://instagram.com/..."
+                >
+
+              } @else {
+
+                @if (profissional.linkInstagram) {
+
+                  <a
+                    [href]="profissional.linkInstagram"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {{ profissional.linkInstagram }}
+                  </a>
+
+                } @else {
+
+                  <span>
+                    Não informado
+                  </span>
+
+                }
+
+              }
+
+            </div>
+
+
+            <div class="campo">
+
+              <label>
+                Link do Facebook
+              </label>
+
+              @if (editando) {
+
+                <input
+                  type="url"
+                  [(ngModel)]="formulario.linkFacebook"
+                  placeholder="https://facebook.com/..."
+                >
+
+              } @else {
+
+                @if (profissional.linkFacebook) {
+
+                  <a
+                    [href]="profissional.linkFacebook"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {{ profissional.linkFacebook }}
+                  </a>
+
+                } @else {
+
+                  <span>
+                    Não informado
+                  </span>
+
+                }
+
+              }
+
+            </div>
+
+
+            <div class="campo">
+
+              <label>
+                Link do Twitter / X
+              </label>
+
+              @if (editando) {
+
+                <input
+                  type="url"
+                  [(ngModel)]="formulario.linkTwitter"
+                  placeholder="https://x.com/..."
+                >
+
+              } @else {
+
+                @if (profissional.linkTwitter) {
+
+                  <a
+                    [href]="profissional.linkTwitter"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {{ profissional.linkTwitter }}
+                  </a>
+
+                } @else {
+
+                  <span>
+                    Não informado
+                  </span>
+
+                }
+
+              }
+
+            </div>
+
+
+            <div class="campo">
+
+              <label>
+                Link do endereço
+              </label>
+
+              @if (editando) {
+
+                <input
+                  type="url"
+                  [(ngModel)]="formulario.linkEndereco"
+                  placeholder="Link do Google Maps"
+                >
+
+              } @else {
+
+                @if (profissional.linkEndereco) {
+
+                  <a
+                    [href]="profissional.linkEndereco"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Ver localização
+                  </a>
+
+                } @else {
+
+                  <span>
+                    Não informado
+                  </span>
+
+                }
+
+              }
+
+            </div>
+
+          </div>
+
+
+          <!-- ===================================================
+               LOGO
+          ==================================================== -->
+
+          @if (profissional.imagemUrlLogo || editando) {
+
+            <div class="logo-section">
+
+              <h2>
+                Logo
+              </h2>
+
+              <label class="logo-editavel">
+
+                @if (previewLogo) {
+
+                  <img
+                    [src]="previewLogo"
+                    alt="Logo"
+                    class="logo-profissional"
+                  >
+
+                } @else if (profissional.imagemUrlLogo) {
+
+                  <img
+                    [src]="profissional.imagemUrlLogo"
+                    alt="Logo"
+                    class="logo-profissional"
+                  >
+
+                } @else {
+
+                  <div class="logo-sem-imagem">
+                    Adicionar logo
+                  </div>
+
+                }
+
+                @if (editando) {
+
+                  <div class="overlay-logo">
+
+                    <span>📷</span>
+
+                    <small>
+                      Clique para alterar
+                    </small>
+
+                  </div>
+
+                }
+
+                <input
+                  type="file"
+                  accept="image/*"
+                  hidden
+                  (change)="selecionarLogo($event)"
+                >
+
+              </label>
+
+            </div>
+
+          }
+
+        </div>
+
+
+        <!-- =====================================================
+             BOTÕES DE AÇÃO
+        ====================================================== -->
+
+        <div class="acoes">
+
+          @if (editando) {
+
+            <button
+              type="button"
+              (click)="fecharEdicao()"
+            >
+              Cancelar
+            </button>
+
+            <button
+              type="button"
+              (click)="salvarPerfil()"
+              [disabled]="salvando"
+            >
+              {{ salvando ? 'Salvando...' : 'Salvar' }}
+            </button>
+
+          } @else {
+
+            <button
+              type="button"
+              (click)="abrirEdicao()"
+            >
+              Editar perfil
+            </button>
+
+          }
+
+        </div>
+
+      </div>
+
+    </div>
+
+  }
+
+</div>

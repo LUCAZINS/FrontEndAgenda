@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { GoogleService, GoogleUserType} from '../../../../service/google-service';
+import { GoogleService, GoogleUserType} from '../../../../service/googleservice';
 import { AuthService } from '../../../auth/auth';
 import { Router, Routes } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -34,14 +34,16 @@ export class LoginGoogleProfissional
       next: usuario => {
 
         this.usuarioAutenticado = usuario.autenticado;
-
-        if (usuario.autenticado) {
+if (usuario.autenticado && usuario.role === 'Profissional')
+{
+            if (usuario.autenticado) {
 
           this.router.navigate([
-            '/Auth/login/Profissional/home'
+            '/Auth/Profissional/home'
           ]);
 
-        }
+}
+}
 
       },
 
@@ -97,17 +99,18 @@ export class LoginGoogleProfissional
 
   this.authService.verificarSessao()
     .subscribe({
+      
       next: usuario => {
-
+      if (usuario.autenticado && usuario.role === 'Profissional'){
         if (usuario.autenticado) {
 
           this.router.navigate([
-            'Auth/login/Profissional/home'
+            'Auth/Profissional/home'
           ]);
 
         }
 
-      },
+      }},
 
       error: erro => {
 

@@ -1,0 +1,284 @@
+<div class="clientes-container">
+
+  <!-- ========================= -->
+  <!-- LISTA DE CLIENTES -->
+  <!-- ========================= -->
+
+  @if (!clienteSelecionado()) {
+
+    <div class="cabecalho">
+
+      <div>
+        <h2>Meus clientes</h2>
+        <p>Clientes que já realizaram agendamentos</p>
+      </div>
+    
+      <span class="quantidade">
+        {{ clientesFiltrados().length }}
+      </span>
+    <input
+      type="text"
+      placeholder="Pesquisar cliente"
+      [ngModel]="filtroNome()"
+      (ngModelChange)="filtroNome.set($event)"
+    />
+    </div>
+
+
+    @if (carregando()) {
+
+      <div class="estado">
+        <p>Carregando clientes...</p>
+      </div>
+
+    }
+
+
+    @if (erro()) {
+
+      <div class="estado">
+        <p>{{ erro() }}</p>
+      </div>
+
+    }
+
+
+    @if (!carregando() && !erro() && clientes().length === 0) {
+
+      <div class="estado">
+        <p>Nenhum cliente encontrado.</p>
+      </div>
+
+    }
+
+
+    @if (!carregando() && clientes().length > 0) {
+
+      <div class="clientes-grid">
+
+        @for (
+          cliente of clientesFiltrados();
+          track cliente.clienteId
+        ) {
+
+          <button
+            type="button"
+            class="cliente-card"
+            (click)="selecionarCliente(cliente)"
+          >
+
+            <div class="cliente-avatar">
+              {{ cliente.nome.charAt(0).toUpperCase() }}
+            </div>
+
+
+            <div class="cliente-info">
+
+              <h3>
+                {{ cliente.nome }}
+              </h3>
+
+              @if (cliente.email) {
+
+                <span>
+                  {{ cliente.email }}
+                </span>
+
+              }
+
+              @if (cliente.telefone) {
+
+                <span>
+                  {{ cliente.telefone }}
+                </span>
+
+              }
+
+            </div>
+
+            <span>
+                {{ cliente.agendamentos }}
+              </span>
+            <div class="cliente-seta">
+              →
+            </div>
+
+          </button>
+
+        }
+
+      </div>
+
+    }
+
+  }
+
+
+  <!-- ========================= -->
+  <!-- CLIENTE SELECIONADO -->
+  <!-- ========================= -->
+
+  @if (clienteSelecionado()) {
+
+    <div class="detalhes-container">
+
+      <button
+        type="button"
+        class="voltar"
+        (click)="voltarClientes()"
+      >
+        ← Voltar para clientes
+      </button>
+
+
+      <div class="cliente-header">
+
+        <div class="cliente-avatar grande">
+
+          {{
+            clienteSelecionado().nome
+              .charAt(0)
+              .toUpperCase()
+          }}
+
+        </div>
+
+
+        <div>
+
+          <h2>
+            {{ clienteSelecionado().nome }}
+          </h2>
+
+          @if (clienteSelecionado().email) {
+
+            <p>
+              {{ clienteSelecionado().email }}
+            </p>
+
+          }
+
+          @if (clienteSelecionado().telefone) {
+
+            <p>
+              {{ clienteSelecionado().telefone }}
+            </p>
+
+          }
+
+        </div>
+
+      </div>
+
+
+      <!-- ========================= -->
+      <!-- LEGENDA -->
+      <!-- ========================= -->
+
+      <div class="legenda">
+
+        <div class="legenda-item futuro">
+          <span></span>
+          Futuro
+        </div>
+
+        <div class="legenda-item passado">
+          <span></span>
+          Passado
+        </div>
+
+        <div class="legenda-item cancelado">
+          <span></span>
+          Cancelado
+        </div>
+
+        <div class="legenda-item concluido">
+          <span></span>
+          Concluído
+        </div>
+
+      </div>
+
+
+      <!-- ========================= -->
+      <!-- AGENDAMENTOS -->
+      <!-- ========================= -->
+
+      <div class="agendamentos">
+
+        <h3>Agendamentos</h3>
+
+
+        @if (
+          !clienteSelecionado().agendamentos ||
+          clienteSelecionado().agendamentos.length === 0
+        ) {
+
+          <div class="estado">
+            <p>
+              Esse cliente ainda não possui agendamentos.
+            </p>
+          </div>
+
+        }
+
+
+        @for (
+          agendamento of clienteSelecionado().agendamentos;
+          track $index
+        ) {
+
+          <button
+            type="button"
+            class="agendamento-card"
+            [ngClass]="obterClasseAgendamento(agendamento)"
+          >
+
+            <div class="agendamento-data">
+
+              <strong>
+                {{
+                  agendamento.data
+                    | date:'dd/MM/yyyy'
+                }}
+              </strong>
+
+              <span>
+                {{
+                  agendamento.data
+                    | date:'HH:mm'
+                }}
+              </span>
+
+            </div>
+
+
+            <div class="agendamento-info">
+
+              <h4>
+                {{ agendamento.nome }}
+              </h4>
+
+              <span class="status">
+                {{ obterStatusAgendamento(agendamento) }}
+              </span>
+
+            </div>
+
+
+            <div class="agendamento-seta">
+              →
+            </div>
+
+          </button>
+
+        }
+
+      </div>
+
+    </div>
+
+  }
+
+</div>
+

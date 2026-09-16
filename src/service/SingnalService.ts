@@ -48,16 +48,5 @@ export class SignalrService {
 
   ouvirAgendamentoAtualizado(callback: (agendamento: any) => void): void {
     this.hubConnection?.on('AgendamentoAtualizado', callback);
-  }
-
-  
-
-  pararConexao(): Promise<void> {
-    if (!this.hubConnection) {
-      return Promise.resolve();
-    }
-
-    return this.hubConnection.stop();
-  }
-  
+  } 
 }

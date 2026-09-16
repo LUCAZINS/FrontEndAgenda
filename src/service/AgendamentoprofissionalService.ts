@@ -66,6 +66,7 @@ export class AgendamentoprofissionalService {
   private readonly apiUrl = environment.apiUrl;
 
   readonly agendamentos = signal<Agendamento[]>([]);
+  readonly agendamentosHoje = signal<Agendamento[]>([]);
   readonly carregado = signal(false);
 
   constructor(private http: HttpClient) {}
@@ -164,25 +165,79 @@ export class AgendamentoprofissionalService {
     );
   }
 
-  adicionarNoCache(agendamento: Agendamento): void {
-    const existe = this.agendamentos()
-      .some(item => item.id === agendamento.id);
+adicionarNoCache(agendamento: Agendamento): void {
 
-    if (existe) {
-      this.atualizarNoCache(agendamento);
-      return;
-    }
+  // =========================
+  // CACHE DE TODOS
+  // =========================
+
+  const existe = this.agendamentos()
+    .some(item => item.id === agendamento.id);
+
+  if (existe) {
+
+    this.atualizarNoCache(agendamento);
+
+  } else {
 
     this.agendamentos.update(lista => [
       ...lista,
       agendamento
     ]);
-    console.log('Agendamento adicionado ao cache:', agendamento);
+
   }
 
+
+  // =========================
+  // CACHE DE HOJE
+  // =========================
+
+  const dataAgendamento = new Date(agendamento.dataInicio);
+  const hoje = new Date();
+
+  const ehHoje =
+    dataAgendamento.getFullYear() === hoje.getFullYear() &&
+    dataAgendamento.getMonth() === hoje.getMonth() &&
+    dataAgendamento.getDate() === hoje.getDate();
+
+
+  if (ehHoje) {
+
+    const existeHoje = this.agendamentosHoje()
+      .some(item => item.id === agendamento.id);
+
+    if (!existeHoje) {
+
+      this.agendamentosHoje.update(lista => [
+        ...lista,
+        agendamento
+      ]);
+
+      console.log(
+        '🟢 Novo agendamento adicionado aos agendamentos de hoje:',
+        agendamento
+      );
+
+    }
+
+  }
+
+  console.log(
+    '📋 Todos:',
+    this.agendamentos()
+  );
+
+  console.log(
+    '📅 Hoje:',
+    this.agendamentosHoje()
+  );
+}
+
 atualizarNoCache(agendamento: Partial<Agendamento>): void {
+
   this.agendamentos.update(lista =>
     lista.map(item => {
+
       if (item.id !== agendamento.id) {
         return item;
       }
@@ -190,7 +245,23 @@ atualizarNoCache(agendamento: Partial<Agendamento>): void {
       return {
         ...item,
         ...agendamento,
+        cliente: agendamento.cliente ?? item.cliente,
+        profissional: agendamento.profissional ?? item.profissional,
+        servico: agendamento.servico ?? item.servico
+      };
+    })
+  );
 
+  this.agendamentosHoje.update(lista =>
+    lista.map(item => {
+
+      if (item.id !== agendamento.id) {
+        return item;
+      }
+
+      return {
+        ...item,
+        ...agendamento,
         cliente: agendamento.cliente ?? item.cliente,
         profissional: agendamento.profissional ?? item.profissional,
         servico: agendamento.servico ?? item.servico
@@ -199,24 +270,38 @@ atualizarNoCache(agendamento: Partial<Agendamento>): void {
   );
 }
 
-  atualizarStatusNoCache(
-    id: number,
-    statusAgendamento: string
-  ): void {
-    this.agendamentos.update(lista =>
-      lista.map(item =>
-        item.id === id
-          ? { ...item, statusAgendamento }
-          : item
-      )
-    );
-  }
+atualizarStatusNoCache(
+  id: number,
+  statusAgendamento: string
+): void {
 
-  removerDoCache(id: number): void {
-    this.agendamentos.update(lista =>
-      lista.filter(item => item.id !== id)
-    );
-  }
+  this.agendamentos.update(lista =>
+    lista.map(item =>
+      item.id === id
+        ? { ...item, statusAgendamento }
+        : item
+    )
+  );
+
+  this.agendamentosHoje.update(lista =>
+    lista.map(item =>
+      item.id === id
+        ? { ...item, statusAgendamento }
+        : item
+    )
+  );
+}
+
+removerDoCache(id: number): void {
+
+  this.agendamentos.update(lista =>
+    lista.filter(item => item.id !== id)
+  );
+
+  this.agendamentosHoje.update(lista =>
+    lista.filter(item => item.id !== id)
+  );
+}
 
   limparCache(): void {
     this.agendamentos.set([]);
@@ -224,23 +309,35 @@ atualizarNoCache(agendamento: Partial<Agendamento>): void {
   }
 
 
-BuscarServicosDeHoje(): Observable<Agendamento[]> {
-  const url = `${this.apiUrl}/api/Agendamentos/Hoje`;
+    BuscarServicosDeHoje(): Observable<Agendamento[]> {
 
-  console.log('[API] Buscando agendamentos de hoje diretamente na API...');
+  console.log('🔴 1 - ENTROU NO SERVICE');
 
-  return this.http
-    .get<Agendamento[]>(url, {
+  return this.http.get<Agendamento[]>(
+    `${this.apiUrl}/api/Agendamentos/Hoje`,
+    {
       withCredentials: true
-    })
-    .pipe(
-      tap(agendamentos => {
-        console.log(
-          `[API] Sucesso! ${agendamentos.length} agendamentos de hoje retornados da API.`
-        );
+    }
+  ).pipe(
 
-        this.agendamentos.set(agendamentos);
-      })
-    );
+    tap(dados => {
+
+      console.log('🔴 2 - RESPOSTA RECEBIDA:', dados);
+
+      console.log(
+        '🔴 3 - ANTES DO SIGNAL:',
+        this.agendamentosHoje()
+      );
+
+      this.agendamentosHoje.set(dados);
+
+      console.log(
+        '🔴 4 - DEPOIS DO SIGNAL:',
+        this.agendamentosHoje()
+      );
+
+    })
+
+  );
 }
 }

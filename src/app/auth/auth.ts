@@ -6,10 +6,10 @@ import { Injectable } from "@angular/core";
 export interface AuthStatus {
   autenticado: boolean;
   role?: string;
-  nome: string;
-  profissionalId?: string;
-  clienteId?: string;
-  estabelecimentoId?: string;
+  nome?: string | null;
+  profissionalId?: string | null;
+  clienteId?: string | null;
+  estabelecimentoId?: string | null;
 }
 
 @Injectable({

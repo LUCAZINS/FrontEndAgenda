@@ -10,15 +10,16 @@ import {
   EditarServicoDto,
   ServicoProfissionalModel,
   ServicoProfissionalService
-} from '../../../../../service/servico-profissional';
+} from '../../../../../service/ServicoProfissionalService';
 
 // IMPORTANTE: Ajuste o caminho do import de acordo com a sua pasta de services
-import { NotificacaoService } from '../../../../../service/NotificaçãoService'; 
+import { NotificacaoService } from '../../../../../service/NotificaçãoService';
+import { RouterLink } from '@angular/router'; 
 
 @Component({
   selector: 'app-servicocomponent',
   standalone: true,
-  imports: [FormsModule, CurrencyPipe, NgClass],
+  imports: [FormsModule, CurrencyPipe, NgClass, RouterLink],
   templateUrl: './servicocomponent.html',
   styleUrl: './servicocomponent.css'
 })

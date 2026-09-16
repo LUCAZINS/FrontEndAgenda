@@ -918,3 +918,187 @@
   margin: 0;
   padding: 15px 16px 0;
 }
+
+.btn-criar-novo {
+  width: 45px;
+  height: 45px;
+  border: none;
+  border-radius: 50%;
+  background-color: #007bff;
+  color: white;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+  font-size: 24px;
+  transition: 0.2s;
+}
+
+.btn-criar-novo:hover {
+  background-color: #0056b3;
+  transform: scale(1.05);
+}
+
+.icone-plus {
+  line-height: 1;
+}
+
+.barra-filtros {
+  align-items: flex-end;
+  gap: 20px;
+
+  width: 90%;
+  padding: 18px 20px;
+  margin-bottom: 25px;
+
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
+}
+
+
+/* GRUPOS */
+
+.filtro-grupo {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+
+  flex: 1;
+  min-width: 180px;
+}
+
+.filtro-pesquisa {
+  flex: 2;
+}
+
+
+/* LABEL */
+
+.filtro-grupo label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #374151;
+}
+
+
+/* CAMPO DE PESQUISA */
+
+.campo-pesquisa {
+  display: flex;
+  align-items: center;
+
+  height: 44px;
+  padding: 0 13px;
+
+  background: #f9fafb;
+  border: 1px solid #d1d5db;
+  border-radius: 9px;
+
+  transition: 0.2s ease;
+}
+
+.campo-pesquisa:focus-within {
+  background: #fff;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.10);
+}
+
+
+/* ÍCONE DA PESQUISA */
+
+.icone-pesquisa {
+  margin-right: 9px;
+
+  font-size: 22px;
+  line-height: 1;
+  color: #6b7280;
+}
+
+
+/* INPUT */
+
+.input-busca {
+  width: 100%;
+  height: 100%;
+
+  border: none;
+  outline: none;
+  background: transparent;
+
+  font-size: 14px;
+  color: #111827;
+}
+
+.input-busca::placeholder {
+  color: #9ca3af;
+}
+
+
+/* SELECT */
+
+.select-busca {
+  width: 100%;
+  height: 44px;
+
+  padding: 0 12px;
+
+  border: 1px solid #d1d5db;
+  border-radius: 9px;
+
+  background: #f9fafb;
+  color: #374151;
+
+  font-size: 14px;
+
+  outline: none;
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+.select-busca:hover {
+  border-color: #9ca3af;
+}
+
+.select-busca:focus {
+  background: #fff;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.10);
+}
+
+
+/* RESPONSIVO */
+
+@media (max-width: 800px) {
+  .barra-filtros {
+    flex-wrap: wrap;
+  }
+
+  .filtro-pesquisa {
+    flex: 100%;
+  }
+
+  .filtro-grupo {
+    flex: 1;
+  }
+}
+
+@media (max-width: 500px) {
+  .barra-filtros {
+    display: table-cell;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 14px;
+  }
+
+  .filtro-grupo,
+  .filtro-pesquisa {
+    width: 100%;
+    flex: none;
+  }
+}

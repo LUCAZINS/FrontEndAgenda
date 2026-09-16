@@ -6,11 +6,10 @@
     <div class="navbar-esquerda">
 
       <!-- Logo -->
-      <a routerLink="/Auth/login/Profissional/home" class="logo">
+      <a routerLink="/Auth/Profissional/home" class="logo">
         <h2>Imagem da logo</h2>
       </a>
 
-      <!-- Separador -->
       <div class="separador"></div>
 
       <!-- Saudação -->
@@ -65,69 +64,72 @@
     </section>
 
 
-<!-- BARRA LATERAL — SOMENTE NA HOME -->
-@if (mostrarBarraAgendamentos()) {
+    <!-- BARRA LATERAL — SOMENTE NA HOME -->
+    @if (mostrarBarraAgendamentos()) {
 
-  <aside class="barra-agendamentos">
+      <aside class="barra-agendamentos">
 
-    <div class="titulo-agendamentos">
-      <h3>Próximos agendamentos</h3>
+        <div class="titulo-agendamentos">
 
-      <a routerLink="agendamentos">
-        Ver todos
-      </a>
-    </div>
+          <h3>Próximos agendamentos</h3>
 
-    <div class="data-agendamentos">
-      <span>Hoje</span>
-    </div>
+          <a routerLink="agendamentos">
+            Ver todos
+          </a>
+
+        </div>
 
 
-    @if (agendamentosHoje().length === 0) {
-      <div class="nenhum-agendamento">
-        <span>Nenhum agendamento para hoje.</span>
+        <div class="data-agendamentos">
+          <span>Hoje</span>
+        </div>
+
+
+@if (AgendamentoprofissionalService.agendamentosHoje().length === 0) {
+
+  <div class="nenhum-agendamento">
+    <span>Nenhum agendamento para hoje.</span>
+  </div>
+
+} @else {
+
+  @for (
+    agendamento of AgendamentoprofissionalService.agendamentosHoje();
+    track agendamento.id
+  ) {
+
+    <div class="agendamento">
+
+      <div class="horario">
+        {{ agendamento.dataInicio | date:'HH:mm' }}
       </div>
 
-    } @else {
+      <div class="informacoes-agendamento">
 
-    @for (
-      agendamento of agendamentosHoje();
-      track agendamento.id
-    ) {
+        <strong>
+          {{ agendamento.cliente.nome }}
+        </strong>
 
-        @if (agendamento.statusAgendamento !== 'Cancelado') {
+        <span>
+          {{ agendamento.servico.nome }}
+        </span>
 
-          <div class="agendamento">
+      </div>
 
-            <div class="horario">
-              {{ agendamento.dataInicio | date:'HH:mm' }}
-            </div>
+    </div>
 
-            <div class="informacoes-agendamento">
-
-              <strong>
-                {{ agendamento.cliente.nome }}
-              </strong>
-
-              <span>
-                {{ agendamento.servico.nome }}
-              </span>
-
-            </div>
-
-          </div>
-
-        }
-
-      }
-
-    }
-
-  </aside>
+  }
 
 }
 
+      </aside>
+
+    }
+
   </main>
+
+
+  <!-- RODAPÉ -->
   <footer class="rodape">
 
     <p>
@@ -139,7 +141,5 @@
     </p>
 
   </footer>
+
 </div>
-
-
-<!-- RODAPÉ -->

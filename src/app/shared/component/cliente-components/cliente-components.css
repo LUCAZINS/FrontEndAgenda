@@ -1,0 +1,507 @@
+
+.clientes-container {
+  width: 100%;
+  padding: 25px;
+  box-sizing: border-box;
+}
+
+/* =========================
+   CABEÇALHO
+========================= */
+
+.cabecalho {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+
+  width: 100%;
+  padding: 20px 24px;
+  margin-bottom: 24px;
+
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+}
+
+
+/* TÍTULO */
+
+.cabecalho > div:first-child {
+  flex: 1;
+  min-width: 0;
+}
+
+.cabecalho h2 {
+  margin: 0;
+
+  font-size: 22px;
+  font-weight: 700;
+  color: #1f2937;
+}
+
+.cabecalho p {
+  margin: 5px 0 0;
+
+  font-size: 14px;
+  color: #6b7280;
+}
+
+
+/* QUANTIDADE */
+
+.quantidade {
+  min-width: 36px;
+  height: 36px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0 10px;
+
+  border-radius: 50%;
+
+  background: #eff6ff;
+  color: #2563eb;
+
+  font-size: 14px;
+  font-weight: 700;
+}
+
+
+/* PESQUISA */
+
+.cabecalho input {
+  width: 250px;
+  height: 42px;
+
+  padding: 0 14px;
+
+  border: 1px solid #d1d5db;
+  border-radius: 9px;
+
+  background: #f9fafb;
+
+  color: #111827;
+  font-size: 14px;
+
+  outline: none;
+
+  transition: all 0.2s ease;
+}
+
+.cabecalho input::placeholder {
+  color: #9ca3af;
+}
+
+.cabecalho input:hover {
+  border-color: #9ca3af;
+}
+
+.cabecalho input:focus {
+  background: #ffffff;
+  border-color: #2563eb;
+
+  box-shadow:
+    0 0 0 3px rgba(37, 99, 235, 0.10);
+}
+
+
+/* RESPONSIVO */
+
+@media (max-width: 650px) {
+
+  .cabecalho {
+    flex-wrap: wrap;
+    padding: 18px;
+  }
+
+  .cabecalho > div:first-child {
+    width: 100%;
+    flex: 100%;
+  }
+
+  .cabecalho input {
+    flex: 1;
+    width: auto;
+  }
+}
+
+@media (max-width: 400px) {
+
+  .cabecalho {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .quantidade {
+    align-self: flex-start;
+  }
+
+  .cabecalho input {
+    width: 100%;
+  }
+}
+
+
+/* =========================
+   GRID CLIENTES
+========================= */
+
+.clientes-grid {
+  display: grid;
+
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(280px, 1fr)
+  );
+
+  gap: 15px;
+}
+
+
+/* =========================
+   CARD CLIENTE
+========================= */
+
+.cliente-card {
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+
+  gap: 15px;
+
+  padding: 18px;
+
+  border: 1px solid #e5e5e5;
+  border-radius: 12px;
+
+  background: white;
+
+  cursor: pointer;
+
+  text-align: left;
+
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s,
+    border-color 0.2s;
+}
+
+.cliente-card:hover {
+  transform: translateY(-2px);
+
+  border-color: #ccc;
+
+  box-shadow:
+    0 5px 15px rgba(0, 0, 0, 0.08);
+}
+
+
+/* =========================
+   AVATAR
+========================= */
+
+.cliente-avatar {
+  width: 48px;
+  height: 48px;
+
+  min-width: 48px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: #eeeeee;
+
+  font-size: 19px;
+  font-weight: 600;
+}
+
+.cliente-avatar.grande {
+  width: 60px;
+  height: 60px;
+
+  min-width: 60px;
+
+  font-size: 24px;
+}
+
+
+/* =========================
+   INFORMAÇÕES
+========================= */
+
+.cliente-info {
+  display: flex;
+  flex-direction: column;
+
+  gap: 4px;
+
+  min-width: 0;
+}
+
+.cliente-info h3 {
+  margin: 0;
+
+  font-size: 16px;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cliente-info span {
+  font-size: 13px;
+  color: #777;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+
+/* =========================
+   SETA
+========================= */
+
+.cliente-seta,
+.agendamento-seta {
+  margin-left: auto;
+
+  font-size: 20px;
+
+  color: #999;
+}
+
+
+/* =========================
+   DETALHES
+========================= */
+
+.detalhes-container {
+  width: 100%;
+}
+
+.voltar {
+  border: none;
+  background: transparent;
+
+  padding: 5px 0;
+
+  cursor: pointer;
+
+  color: #555;
+
+  font-size: 14px;
+
+  margin-bottom: 20px;
+}
+
+.voltar:hover {
+  color: #000;
+}
+
+.cliente-header {
+  display: flex;
+  align-items: center;
+
+  gap: 15px;
+
+  margin-bottom: 25px;
+}
+
+.cliente-header h2 {
+  margin: 0 0 5px;
+}
+
+.cliente-header p {
+  margin: 2px 0;
+
+  color: #777;
+
+  font-size: 14px;
+}
+
+
+/* =========================
+   LEGENDA
+========================= */
+
+.legenda {
+  display: flex;
+  flex-wrap: wrap;
+
+  gap: 15px;
+
+  margin-bottom: 20px;
+}
+
+.legenda-item {
+  display: flex;
+  align-items: center;
+
+  gap: 6px;
+
+  font-size: 13px;
+  color: #666;
+}
+
+.legenda-item span {
+  width: 10px;
+  height: 10px;
+
+  border-radius: 50%;
+}
+
+.legenda-item.futuro span {
+  background: #4caf50;
+}
+
+.legenda-item.passado span {
+  background: #9e9e9e;
+}
+
+.legenda-item.cancelado span {
+  background: #e53935;
+}
+
+.legenda-item.concluido span {
+  background: #2196f3;
+}
+
+
+/* =========================
+   AGENDAMENTOS
+========================= */
+
+.agendamentos {
+  display: flex;
+  flex-direction: column;
+
+  gap: 10px;
+}
+
+.agendamentos h3 {
+  margin: 0 0 5px;
+}
+
+
+/* =========================
+   CARD AGENDAMENTO
+========================= */
+
+.agendamento-card {
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+
+  gap: 15px;
+
+  padding: 15px;
+
+  border: 1px solid #e5e5e5;
+
+  border-left: 5px solid #ccc;
+
+  border-radius: 10px;
+
+  background: white;
+
+  cursor: pointer;
+
+  text-align: left;
+}
+
+
+/* FUTURO */
+
+.agendamento-card.status-futuro {
+  border-left-color: #4caf50;
+}
+
+
+/* PASSADO */
+
+.agendamento-card.status-passado {
+  border-left-color: #9e9e9e;
+}
+
+
+/* CANCELADO */
+
+.agendamento-card.status-cancelado {
+  border-left-color: #e53935;
+}
+
+
+/* CONCLUÍDO */
+
+.agendamento-card.status-concluido {
+  border-left-color: #2196f3;
+}
+
+
+/* =========================
+   DATA
+========================= */
+
+.agendamento-data {
+  min-width: 85px;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 3px;
+}
+
+.agendamento-data strong {
+  font-size: 14px;
+}
+
+.agendamento-data span {
+  font-size: 13px;
+  color: #777;
+}
+
+
+/* =========================
+   INFO
+========================= */
+
+.agendamento-info {
+  display: flex;
+  flex-direction: column;
+
+  gap: 4px;
+}
+
+.agendamento-info h4 {
+  margin: 0;
+
+  font-size: 15px;
+}
+
+.status {
+  font-size: 12px;
+  color: #777;
+}
+
+
+/* =========================
+   ESTADOS
+========================= */
+
+.estado {
+  padding: 40px 20px;
+
+  text-align: center;
+
+  color: #777;
+}
