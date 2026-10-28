@@ -8,6 +8,11 @@ export interface Cliente {
   nome: string;
   email: string;
   telefone: string;
+  imagemPerfil: string | null;
+}
+
+export interface editarAgendamentoDto {
+  motivoDaModificacao: string;
 }
 
 export interface Profissional {
@@ -39,8 +44,13 @@ export interface Agendamento {
   profissional: Profissional;
   servicoId: number;
   servico: ServicoDetalhe;
+
+  dataAgendamento: string;
+  agendamentoCriadoPor: string;
+
   dataInicio: string;
   dataFim: string;
+
   observacoes: string;
   statusAgendamento: string;
 }
@@ -107,33 +117,39 @@ export class AgendamentoprofissionalService {
     );
   }
 
-  cancelarAgendamento(id: number): Observable<Agendamento> {
-    return this.http.patch<Agendamento>(
-      `${this.apiUrl}/api/Agendamentos/${id}/cancelar`,
-      {},
-      {
-        withCredentials: true
-      }
-    ).pipe(
-      tap(agendamento => {
-        this.atualizarNoCache(agendamento);
-      })
-    );
-  }
+cancelarAgendamento(
+  id: number,
+  motivoDaModificacao: string
+): Observable<Agendamento> {
+  return this.http.put<Agendamento>(
+    `${this.apiUrl}/api/Agendamentos/${id}/cancelar`,
+    { motivoDaModificacao },
+    { withCredentials: true }
+  ).pipe(
+    tap(agendamento => {
+      this.atualizarNoCache(agendamento);
+    })
+  );
+}
 
-  reativarAgendamento(id: number): Observable<Agendamento> {
-    return this.http.patch<Agendamento>(
-      `${this.apiUrl}/api/Agendamentos/${id}/reativar`,
-      {},
-      {
-        withCredentials: true
-      }
-    ).pipe(
-      tap(agendamento => {
-        this.atualizarNoCache(agendamento);
-      })
-    );
-  }
+  reativarAgendamento(
+  id: number,
+  motivoDaModificacao: string
+): Observable<Agendamento> {
+  return this.http.put<Agendamento>(
+    `${this.apiUrl}/api/Agendamentos/${id}/reativar`,
+    {
+      motivoDaModificacao: motivoDaModificacao
+    },
+    {
+      withCredentials: true
+    }
+  ).pipe(
+    tap(agendamento => {
+      this.atualizarNoCache(agendamento);
+    })
+  );
+}
 
   deletarAgendamento(id: number): Observable<void> {
     return this.http.delete<void>(
@@ -164,6 +180,55 @@ export class AgendamentoprofissionalService {
       })
     );
   }
+
+confirmarAgendamento(id: number): Observable<Agendamento> {
+  return this.http.put<Agendamento>(
+    `${this.apiUrl}/api/Agendamentos/${id}/confirmar`,
+    {},
+    {
+      withCredentials: true
+    }
+  ).pipe(
+    tap(agendamento => {
+      this.atualizarNoCache(agendamento);
+    })
+  );
+}
+
+alterarAgendamento(
+  id: number,
+  observacoes: string,
+  dataInicio: string
+): Observable<Agendamento> {
+  return this.http.put<Agendamento>(
+    `${this.apiUrl}/api/Agendamentos/${id}/alterar`,
+    {
+      observacoes,
+      dataInicio
+    },
+    {
+      withCredentials: true
+    }
+  ).pipe(
+    tap(agendamento => {
+      this.atualizarNoCache(agendamento);
+    })
+  );
+}
+
+concluirAgendamento(id: number): Observable<Agendamento> {
+  return this.http.patch<Agendamento>(
+    `${this.apiUrl}/api/Agendamentos/${id}/concluir`,
+    {},
+    {
+      withCredentials: true
+    }
+  ).pipe(
+    tap(agendamento => {
+      this.atualizarNoCache(agendamento);
+    })
+  );
+}
 
 adicionarNoCache(agendamento: Agendamento): void {
 

@@ -1,0 +1,151 @@
+<div class="notificacoes-container">
+
+  <div class="notificacoes-header">
+    <div>
+      <h1>Notificações</h1>
+
+      <span>
+        {{ notificacaoAgendamentoService.notificacoes().length }}
+        {{
+          notificacaoAgendamentoService.notificacoes().length === 1
+            ? 'notificação'
+            : 'notificações'
+        }}
+      </span>
+    </div>
+
+    @if (notificacaoAgendamentoService.notificacoes().length > 0) {
+
+      <button
+        type="button"
+        class="btn-marcar-todas"
+        (click)="marcarTodasComoLidas()">
+
+        Marcar todas como lidas
+
+      </button>
+
+    }
+  </div>
+
+
+  @if (carregando) {
+
+    <div class="notificacoes-loading">
+      <div class="loading-spinner"></div>
+
+      <span>
+        Carregando notificações...
+      </span>
+    </div>
+
+  }
+
+  @else if (notificacaoAgendamentoService.notificacoes().length === 0) {
+
+    <div class="notificacoes-vazia">
+
+      <div class="icone-vazia">
+        🔔
+      </div>
+
+      <strong>
+        Nenhuma notificação
+      </strong>
+
+      <span>
+        Você não possui notificações no momento.
+      </span>
+
+    </div>
+
+  }
+
+  @else {
+
+    <div class="lista-notificacoes">
+
+      @for (
+        notificacao of notificacaoAgendamentoService.notificacoes();
+        track notificacao.id
+      ) {
+
+        <div
+          class="item-notificacao"
+          [class.nao-lida]="!notificacao.lidaProfissional"
+          (click)="abrirNotificacao(notificacao)">
+
+          <!-- Ícone -->
+          <div class="icone-notificacao">
+            🔔
+          </div>
+
+
+          <!-- Conteúdo -->
+          <div class="conteudo-notificacao">
+
+            <div class="notificacao-topo">
+
+              <strong>
+                  {{ notificacao.descricao }}
+              </strong>
+
+              @if (!notificacao.lidaProfissional) {
+
+                <span
+                  class="bolinha-nao-lida">
+                </span>
+
+              }
+
+            </div>
+
+
+            <div class="informacoes-notificacao">
+
+              <span>
+                <strong>Cliente:</strong>
+                {{ notificacao.clienteNome }}
+              </span>
+
+              <span>
+                <strong>Data:</strong>
+                {{ notificacao.dataInicio | date:'dd/MM/yyyy HH:mm' }}
+              </span>
+
+            </div>
+
+
+            <div class="rodape-notificacao">
+
+              <span>
+                {{ notificacao.data | date:'dd/MM/yyyy HH:mm' }}
+              </span>
+
+              @if (!notificacao.lidaProfissional) {
+
+                <span class="texto-nao-lida">
+                  Não lida
+                </span>
+
+              } @else {
+
+                <span class="texto-lida">
+                  Lida
+                </span>
+
+              }
+
+            </div>
+
+          </div>
+
+        </div>
+
+      }
+
+    </div>
+
+  }
+
+</div>

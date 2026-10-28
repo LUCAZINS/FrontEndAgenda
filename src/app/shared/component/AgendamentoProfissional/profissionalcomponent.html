@@ -202,14 +202,9 @@
 
             <div
               class="agendamento-card"
-
-              [style.top.px]="
-                calcularTop(agendamento)
-              "
-
-              [style.height.px]="
-                calcularAltura(agendamento)
-              "
+              [style.top.px]="calcularTop(agendamento)"
+              [style.height.px]="calcularAltura(agendamento)"
+              (click)="abrirDetalhesAgendamento(agendamento.id)"
             >
 
               <strong>
@@ -561,7 +556,10 @@
           track agendamento.id
         ) {
 
-          <div class="item-agendamento">
+          <div
+            class="item-agendamento"
+            (click)="abrirDetalhesAgendamento(agendamento.id)"
+          >
 
             <!-- DATA -->
 
@@ -730,7 +728,7 @@
           >
 
           @if (
-            clienteBusca().length >= 2 &&
+            clienteBusca().length >= 3 &&
             clientesSugestoes().length > 0
           ) {
             <div class="sugestoes-clientes">
@@ -747,6 +745,16 @@
                   <strong>{{ cliente.nome }}</strong>
                 </button>
               }
+            </div>
+          }
+
+          @if (
+            clienteBusca().length >= 3 &&
+            clientesSugestoes().length === 0 &&
+            clienteSelecionado() === null
+          ) {
+            <div class="sem-clientes">
+              Nenhum cliente encontrado.
             </div>
           }
 
@@ -855,3 +863,81 @@
     </div>
   </div>
 }
+<!-- ================================================= -->
+<!-- NOTIFICAÇÕES -->
+<!-- ================================================= -->
+
+<div class="notificacoes-container">
+
+  @for (
+    notificacao of notificacaoService.notificacoes();
+    track notificacao.id
+  ) {
+
+    <div
+      class="notificacao"
+      [class.sucesso]="notificacao.tipo === 'sucesso'"
+      [class.erro]="notificacao.tipo === 'erro'"
+      [class.info]="notificacao.tipo === 'info'"
+    >
+
+      <div class="notificacao-icone">
+
+        @if (notificacao.tipo === 'sucesso') {
+          ✓
+        }
+
+        @if (notificacao.tipo === 'erro') {
+          !
+        }
+
+        @if (notificacao.tipo === 'info') {
+          i
+        }
+
+      </div>
+
+      <div class="notificacao-conteudo">
+        {{ notificacao.mensagem }}
+      </div>
+
+      <button
+        type="button"
+        class="notificacao-fechar"
+        (click)="notificacaoService.remover(notificacao.id)"
+      >
+        ×
+      </button>
+
+    </div>
+
+  }
+
+</div>
+
+<!-- ================================================= -->
+<!-- NOTIFICAÇÕES -->
+<!-- ================================================= -->
+
+<!-- @for (
+  notificacao of notificacaoService.notificacoes();
+  track notificacao.id
+) {
+
+  <div class="toast-notificacao">
+
+    <span>
+      {{ notificacao.mensagem }}
+    </span>
+
+    <button
+      type="button"
+      class="toast-fechar"
+      (click)="notificacaoService.remover(notificacao.id)"
+    >
+      
+    </button>
+
+  </div>
+
+} -->

@@ -287,7 +287,38 @@
 
             }
 
+
           </div>
+          
+        <div class="campo">
+
+          <label>
+            Foto de fundo
+          </label>
+
+          @if (editando) {
+
+            <label class="checkbox-container">
+              <input
+                type="checkbox"
+                [(ngModel)]="formulario.fotoDeFundo"
+                name="fotoDeFundo"
+              >
+
+              <span>
+                Usar foto como fundo
+              </span>
+            </label>
+
+          } @else {
+
+            <span>
+              {{ profissional.fotoDeFundo ? 'Sim' : 'Não' }}
+            </span>
+
+          }
+
+        </div>
 
 
           <!-- ===================================================
@@ -346,6 +377,14 @@
               }
 
             </div>
+            <div class="campo">
+
+
+
+
+          </div>
+
+
 
           </div>
 

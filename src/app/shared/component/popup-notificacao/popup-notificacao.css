@@ -1,0 +1,85 @@
+.popup-notificacao {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+
+  width: 360px;
+  max-width: calc(100vw - 40px);
+
+  background: white;
+  border-radius: 12px;
+
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.18);
+
+  overflow: hidden;
+
+  z-index: 999999;
+
+  animation: aparecer 0.3s ease;
+}
+
+.popup-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 14px 16px;
+
+  background: #1f2937;
+  color: white;
+}
+
+.popup-titulo {
+  font-weight: 600;
+}
+
+.btn-fechar {
+  border: none;
+  background: transparent;
+  color: white;
+
+  font-size: 22px;
+
+  cursor: pointer;
+
+  width: 30px;
+  height: 30px;
+}
+
+.popup-conteudo {
+  padding: 16px;
+  color: #374151;
+}
+
+.descricao {
+  margin-top: 0;
+  margin-bottom: 14px;
+
+  font-size: 15px;
+}
+
+.informacao {
+  margin-bottom: 7px;
+  font-size: 14px;
+}
+
+.data-notificacao {
+  margin-top: 12px;
+
+  font-size: 12px;
+  color: #6b7280;
+}
+
+@keyframes aparecer {
+
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+}

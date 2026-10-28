@@ -4,7 +4,8 @@ import
   OnInit, 
   ChangeDetectorRef, 
   signal, 
-  computed 
+  computed,
+  ViewChild
 } 
 from '@angular/core';import { RouterLink, RouterOutlet } from '@angular/router';
 import { AuthService, AuthStatus } from '../../../auth/auth';
@@ -15,10 +16,20 @@ import { GoogleService } from '../../../../service/googleservice';
 import { ProfissionalService } from '../../../../service/profissionalservice';
 import { Agendamento, AgendamentoprofissionalService } from '../../../../service/AgendamentoprofissionalService';
 import { SignalrService } from '../../../../service/SingnalService';
+import { NotificacaoAgendamentoService } from '../../../../service/NotificacaoAgendamentoService';
+import {PopupNotificacao} from '../../component/popup-notificacao/popup-notificacao';
+
+
+
 @Component({
   selector: 'app-home-pages',
   standalone: true,
-  imports: [ RouterOutlet, RouterLink, CommonModule ],
+  imports: [ 
+    RouterOutlet, 
+    RouterLink,
+    CommonModule, 
+    PopupNotificacao
+   ],
   templateUrl: './home-pages.html',
   styleUrl: './home-pages.css',
 })
@@ -29,7 +40,7 @@ export class HomePages implements OnInit {
   imagemUrlPerfil: string | null = null;
   imagemUrlLogo: string | null = null;
   imagemUrlBanner: string | null = null;
-
+  @ViewChild(PopupNotificacao) popupNotificacao!: PopupNotificacao;
 get agendamentosHoje() {
   return this.AgendamentoprofissionalService.agendamentosHoje;
 }
@@ -42,6 +53,7 @@ get agendamentosHoje() {
     private router: Router,
     public AgendamentoprofissionalService: AgendamentoprofissionalService,
     private ProfissionalService: ProfissionalService,
+    private NotificacaoAgendamentoService: NotificacaoAgendamentoService,
     private signalrService: SignalrService
   ) {}
 
@@ -133,7 +145,40 @@ get agendamentosHoje() {
         .atualizarNoCache(agendamento);
 
     });
+// NOVA NOTIFICAÇÃO
 
+this.signalrService.ouvirNovaNotificacao(notificacao => {
+
+  console.log(
+    '🟣 Nova notificação recebida:',
+    notificacao
+  );
+
+  this.popupNotificacao.abrir(notificacao);
+
+  this.NotificacaoAgendamentoService
+    .buscarNotificacoesProfissional()
+    .subscribe({
+      next: dados => {
+
+        console.log(
+          '📥 Notificações atualizadas:',
+          dados
+        );
+
+      },
+
+      error: erro => {
+
+        console.error(
+          '❌ Erro ao atualizar notificações:',
+          erro
+        );
+
+      }
+    });
+
+});
 
   } catch (erro) {
 
@@ -145,6 +190,8 @@ get agendamentosHoje() {
   }
 
 }
+
+
 
     buscarAgendamentosDeHoje(): void {
 
@@ -172,6 +219,7 @@ get agendamentosHoje() {
 
       });
   }
+  
 
   carregarProfissional(): void {
   this.ProfissionalService.buscarProfissional().subscribe({
@@ -249,6 +297,8 @@ mostrarBarraAgendamentos(): boolean {
       });
 
   }
+
+
 
 
 }

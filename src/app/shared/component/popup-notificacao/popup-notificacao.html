@@ -1,0 +1,55 @@
+@if (aberto() && notificacao(); as n) {
+
+  <div class="popup-notificacao">
+
+    <div class="popup-header">
+
+      <div class="popup-titulo">
+        🔔 Nova notificação
+      </div>
+
+      <button
+        type="button"
+        class="btn-fechar"
+        (click)="fechar()">
+        ×
+      </button>
+
+    </div>
+
+    <div class="popup-conteudo">
+
+      <p class="descricao">
+        {{ n.descricao }}
+      </p>
+
+      @if (n.clienteNome) {
+        <div class="informacao">
+          <strong>Cliente:</strong>
+          {{ n.clienteNome }}
+        </div>
+      }
+
+      @if (n.servicoNome) {
+        <div class="informacao">
+          <strong>Serviço:</strong>
+          {{ n.servicoNome }}
+        </div>
+      }
+
+      @if (n.dataInicio) {
+        <div class="informacao">
+          <strong>Data:</strong>
+          {{ n.dataInicio | date:'dd/MM/yyyy HH:mm' }}
+        </div>
+      }
+
+      <div class="data-notificacao">
+        {{ n.data | date:'dd/MM/yyyy HH:mm' }}
+      </div>
+
+    </div>
+
+  </div>
+
+}

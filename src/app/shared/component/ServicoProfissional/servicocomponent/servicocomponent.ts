@@ -3,7 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { CurrencyPipe } from '@angular/common';
 import { of, finalize } from 'rxjs';
 import { NgClass } from '@angular/common';
-
+import { NotificacaoAgendamentoService, Notificacao } from '../../../../../service/NotificacaoAgendamentoService';
 
 import {
   CriarServicoDto,
@@ -19,7 +19,7 @@ import { RouterLink } from '@angular/router';
 @Component({
   selector: 'app-servicocomponent',
   standalone: true,
-  imports: [FormsModule, CurrencyPipe, NgClass, RouterLink],
+  imports: [FormsModule, CurrencyPipe, NgClass],
   templateUrl: './servicocomponent.html',
   styleUrl: './servicocomponent.css'
 })

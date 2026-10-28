@@ -1,0 +1,102 @@
+<div class="pagina-detalhes">
+
+  <button
+    type="button"
+    class="btn-voltar"
+    (click)="voltar()">
+    ← Voltar para notificações
+  </button>
+
+  @if (carregando()) {
+
+    <div class="carregando">
+      Carregando notificação...
+    </div>
+
+  } @else if (erro()) {
+
+    <div class="erro">
+      {{ erro() }}
+    </div>
+
+  } @else if (notificacao(); as n) {
+
+    <div class="card-notificacao">
+
+      <div class="cabecalho">
+
+        <div>
+          <span class="icone">🔔</span>
+
+          <div>
+            <h1>Notificação</h1>
+
+            <span class="data">
+              {{ n.data | date:'dd/MM/yyyy HH:mm' }}
+            </span>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="conteudo">
+
+        <div class="campo">
+          <span>Cliente</span>
+          <strong>{{ n.clienteNome }}</strong>
+        </div>
+
+        <div class="campo">
+          <span>Serviço</span>
+          <strong>{{ n.servicoNome }}</strong>
+        </div>
+
+        <div class="campo">
+          <span>Status do agendamento</span>
+          <strong>{{ n.statusDoAgendamento }}</strong>
+        </div>
+
+        <div class="campo">
+          <span>Data do agendamento</span>
+          <strong>
+            {{ n.dataInicio | date:'dd/MM/yyyy HH:mm' }}
+          </strong>
+        </div>
+
+        <div class="campo">
+          <span>Mensagem</span>
+          <p>
+            {{ n.descricao }}
+          </p>
+        </div>
+
+        @if (n.motivoDaModificacao) {
+
+          <div class="campo">
+            <span>Motivo da modificação</span>
+
+            <p>
+              {{ n.motivoDaModificacao }}
+            </p>
+          </div>
+
+        }
+
+      </div>
+
+      <div class="acoes">
+
+        <button
+          type="button"
+          class="btn-agendamento"
+          (click)="abrirAgendamento()">
+          Ver agendamento
+        </button>
+
+      </div>
+
+    </div>
+
+  }
+
+</div>

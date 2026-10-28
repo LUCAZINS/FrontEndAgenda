@@ -30,6 +30,7 @@ export class PerfilProfComponent implements OnInit {
 
   instagram: '',
   facebook: '',
+  fotoDeFundo: false,
   twitter: '',
 
   endereco: '',
@@ -91,6 +92,7 @@ abrirEdicao(): void {
     horaFechamento: this.profissional.horaFechamento ?? '',
 
     instagram: this.profissional.instagram ?? '',
+    fotoDeFundo: this.profissional.FotoDeFundo ?? false,
     facebook: this.profissional.facebook ?? '',
     twitter: this.profissional.twitter ?? '',
 
@@ -133,7 +135,7 @@ salvarPerfil(): void {
     instagram: this.formulario.instagram,
     facebook: this.formulario.facebook,
     twitter: this.formulario.twitter,
-
+    FotoDeFundo: this.formulario.fotoDeFundo,
     endereco: this.formulario.endereco,
 
     linkInstagram: this.formulario.linkInstagram,

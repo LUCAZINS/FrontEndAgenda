@@ -14,7 +14,7 @@ export interface Profissional {
 
   horaAbertura: string;
   horaFechamento: string;
-
+  fotoDeFundo: boolean;
   imagemUrlPerfil: string | null;
   imagemUrlLogo: string | null;
   imagemUrlBanner: string | null;
@@ -49,45 +49,47 @@ export class ProfissionalService {
 
   editarProfissional(dados: any) {
 
-    const formData = new FormData();
+  const formData = new FormData();
 
-    formData.append('Nome', dados.nome ?? '');
-    formData.append('Email', dados.email ?? '');
-    formData.append('Telefone', dados.telefone ?? '');
-    formData.append('Especialidade', dados.especialidade ?? '');
+  formData.append('Nome', dados.nome ?? '');
+  formData.append('Email', dados.email ?? '');
+  formData.append('Telefone', dados.telefone ?? '');
+  formData.append('Especialidade', dados.especialidade ?? '');
 
-    formData.append('HoraAbertura', dados.horaAbertura ?? '');
-    formData.append('HoraFechamento', dados.horaFechamento ?? '');
+  formData.append('HoraAbertura', dados.horaAbertura ?? '');
+  formData.append('HoraFechamento', dados.horaFechamento ?? '');
 
-    formData.append('Instagram', dados.instagram ?? '');
-    formData.append('Facebook', dados.facebook ?? '');
-    formData.append('Twitter', dados.twitter ?? '');
+  formData.append('Instagram', dados.instagram ?? '');
+  formData.append('FotoDeFundo', dados.FotoDeFundo ? 'true' : 'false');
+  formData.append('Facebook', dados.facebook ?? '');
+  formData.append('Twitter', dados.twitter ?? '');
 
-    formData.append('Endereço', dados.endereço ?? '');
+  formData.append('Endereco', dados.endereco ?? '');
 
-    formData.append('LinkInstagram', dados.linkInstagram ?? '');
-    formData.append('LinkFacebook', dados.linkFacebook ?? '');
-    formData.append('LinkTwitter', dados.linkTwitter ?? '');
-    formData.append('LinkEndereço', dados.linkEndereço ?? '');
+  formData.append('LinkInstagram', dados.linkInstagram ?? '');
+  formData.append('LinkFacebook', dados.linkFacebook ?? '');
+  formData.append('LinkTwitter', dados.linkTwitter ?? '');
+  formData.append('LinkEndereco', dados.linkEndereco ?? '');
 
-    if (dados.foto) {
-      formData.append('Foto', dados.foto);
-    }
-
-    if (dados.banner) {
-      formData.append('Banner', dados.banner);
-    }
-
-    if (dados.logo) {
-      formData.append('Logo', dados.logo);
-    }
-
-    return this.http.put(
-      `${this.apiUrl}/api/Profissionais/profissional/me`,
-      formData,
-      {
-        withCredentials: true
-      }
-    );
+  if (dados.foto) {
+    formData.append('Foto', dados.foto);
   }
+
+  if (dados.banner) {
+    formData.append('Banner', dados.banner);
+  }
+
+  if (dados.logo) {
+    formData.append('Logo', dados.logo);
+  }
+
+  return this.http.put(
+    `${this.apiUrl}/api/Profissionais/profissional/me`,
+    formData,
+    {
+      withCredentials: true
+    }
+  );
+}      
 }
+    

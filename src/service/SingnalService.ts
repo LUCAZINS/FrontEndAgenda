@@ -1,16 +1,19 @@
 import { Injectable } from '@angular/core';
 import * as signalR from '@microsoft/signalr';
 import { environment } from '../environments/environments';
+import { Notificacao } from './NotificacaoAgendamentoService';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SignalrService {
+
   private readonly apiUrl = environment.apiUrl;
 
   private hubConnection?: signalR.HubConnection;
 
   iniciarConexao(): Promise<void> {
+
     this.hubConnection = new signalR.HubConnectionBuilder()
       .withUrl(`${this.apiUrl}/agendaHub`, {
         withCredentials: true
@@ -38,15 +41,27 @@ export class SignalrService {
     this.hubConnection?.on('StatusAlterado', callback);
   }
 
-  ouvirNovoAgendamento(callback: (agendamento: any) => void): void {
+  ouvirNovoAgendamento(
+    callback: (agendamento: any) => void
+  ): void {
     this.hubConnection?.on('NovoAgendamento', callback);
   }
 
-  ouvirDeletaragendameneto(callback: (agendamento: any) => void): void {
+  ouvirDeletaragendameneto(
+    callback: (agendamento: any) => void
+  ): void {
     this.hubConnection?.on('AgendamentoRemovido', callback);
   }
 
-  ouvirAgendamentoAtualizado(callback: (agendamento: any) => void): void {
+  ouvirAgendamentoAtualizado(
+    callback: (agendamento: any) => void
+  ): void {
     this.hubConnection?.on('AgendamentoAtualizado', callback);
-  } 
+  }
+
+  ouvirNovaNotificacao(
+    callback: (notificacao: Notificacao) => void
+  ): void {
+    this.hubConnection?.on('NovaNotificacao', callback);
+  }
 }

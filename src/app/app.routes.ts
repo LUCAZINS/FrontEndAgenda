@@ -38,6 +38,12 @@ export const routes: Routes = [
         import('./shared/component/AgendamentoProfissional/profissionalcomponent')
           .then(m => m.Profissionalcomponent),
     },
+      {
+      path: 'agendamentos/:id',
+      loadComponent: () =>
+        import('./shared/component/detalhes-agendamento-component/detalhes-agendamento-component')
+          .then(m => m.DetalhesAgendamentoComponent),
+      },
 
     {
       path: 'Perfil',
@@ -51,6 +57,19 @@ export const routes: Routes = [
       loadComponent: () =>
         import('./shared/component/cliente-components/clienteComponents')
           .then(m => m.ClienteComponents),
+    },
+
+    {
+      path: 'notificacoes',
+      loadComponent: () =>
+        import('./shared/component/notificacoes-component/notificacoes-component')
+          .then(m => m.NotificacoesComponent),
+    },
+    {
+      path: 'notificacoes/:id',
+      loadComponent: () =>
+        import('./shared/component/notificacoesdetail-component/NotificacoesDetailComponent')
+          .then(m => m.NotificacaoDetailComponent),
     }
 
   ]

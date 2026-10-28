@@ -1,0 +1,516 @@
+@if (carregandoTela()) {
+
+  <div class="tela-carregamento">
+
+    <div class="carregamento-conteudo">
+
+      <img
+        src="assets/logo.png"
+        alt="Logo da empresa"
+        class="logo-carregamento"
+      >
+
+
+      <div class="spinner"></div>
+
+
+    </div>
+
+  </div>
+
+} @else {
+
+<div class="detalhes-container">
+
+  <div class="cabecalho">
+
+    <button
+      type="button"
+      class="btn-voltar"
+      (click)="voltar()">
+
+      ← Voltar
+
+    </button>
+
+    <div>
+      <h1>Detalhes do agendamento</h1>
+      <p>Visualize as informações deste atendimento.</p>
+    </div>
+
+  </div>
+
+
+  @if (carregando()) {
+
+    <div class="estado-carregando">
+      Carregando agendamento...
+    </div>
+
+  } @else if (erro()) {
+
+    <div class="estado-erro">
+      {{ erro() }}
+    </div>
+
+  } @else if (agendamento(); as item) {
+
+    <div class="detalhes-card">
+
+      <!-- Serviço -->
+
+      <section class="secao">
+
+        <h2>Serviço</h2>
+
+        <div class="informacao-principal">
+
+          <div>
+            <span class="label">Nome</span>
+            <strong>
+              {{ item.servico?.nome || 'Não informado' }}
+            </strong>
+          </div>
+
+          <div>
+            <span class="label">Categoria</span>
+            <strong>
+              {{ item.servico?.categoria || 'Não informado' }}
+            </strong>
+          </div>
+
+          <div>
+            <span class="label">Preço</span>
+            <strong>
+              {{ item.servico?.preco | currency:'BRL':'symbol':'1.2-2' }}
+            </strong>
+          </div>
+
+          <div>
+            <span class="label">Duração</span>
+            <strong>
+              {{ item.servico?.tempoEmMinutos }} minutos
+            </strong>
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- Cliente -->
+
+      <section class="secao">
+
+        <h2>Cliente</h2>
+
+        <div class="cliente">
+
+          @if (item.cliente?.imagemPerfil) {
+
+            <img
+              [src]="item.cliente.imagemPerfil"
+              [alt]="item.cliente.nome"
+              class="imagem-cliente"
+            />
+
+          } @else {
+
+            <div class="avatar-cliente">
+              {{ item.cliente?.nome?.charAt(0) }}
+            </div>
+
+          }
+
+          <div class="cliente-dados">
+
+            <strong>
+              {{ item.cliente?.nome || 'Cliente não informado' }}
+            </strong>
+
+            <span>
+              {{ item.cliente?.email }}
+            </span>
+
+            <span>
+              {{ item.cliente?.telefone }}
+            </span>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- Data e horário -->
+
+      <section class="secao">
+
+        <h2>Data e horário</h2>
+
+        <div class="informacao-principal">
+
+          <div>
+            <span class="label">Data</span>
+
+            <strong>
+              {{ item.dataInicio | date:'dd/MM/yyyy' }}
+            </strong>
+          </div>
+
+          <div>
+            <span class="label">Horário</span>
+
+            <strong>
+              {{ item.dataInicio | date:'HH:mm' }}
+              -
+              {{ item.dataFim | date:'HH:mm' }}
+            </strong>
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- Status -->
+
+      <section class="secao">
+
+        <h2>Status</h2>
+
+        <span
+          class="status"
+          [class.aguardando]="item.statusAgendamento === 'Aguardando Resposta'"
+          [class.confirmado]="item.statusAgendamento === 'Confirmado'"
+          [class.cancelado]="item.statusAgendamento === 'Cancelado'"
+          [class.finalizado]="item.statusAgendamento === 'Finalizado'"
+        >
+          {{ item.statusAgendamento }}
+        </span>
+
+      </section>
+
+
+      <!-- Observações -->
+
+      <section class="secao">
+
+        <h2>Observações</h2>
+
+        @if (item.observacoes) {
+
+          <p class="observacoes">
+            {{ item.observacoes }}
+          </p>
+
+        } @else {
+
+          <p class="sem-observacao">
+            Nenhuma observação foi adicionada.
+          </p>
+
+        }
+
+      </section>
+
+
+      <!-- Informações adicionais -->
+
+      <section class="secao">
+
+        <h2>Informações adicionais</h2>
+
+        <div class="informacao-principal">
+
+          <div>
+            <span class="label">
+              Agendamento criado por
+            </span>
+
+            <strong>
+              {{ item.agendamentoCriadoPor }}
+            </strong>
+          </div>
+
+          <div>
+            <span class="label">
+              Criado em
+            </span>
+
+            <strong>
+              {{ item.dataAgendamento | date:'dd/MM/yyyy HH:mm' }}
+            </strong>
+          </div>
+
+        </div>
+
+      </section>
+<!-- Ações -->
+
+<section class="secao acoes">
+@if (
+      item.statusAgendamento !== 'Finalizado' &&
+      item.statusAgendamento !== 'Concluído' &&
+      item.statusAgendamento !== 'Cancelado'
+    ) 
+    
+    {
+  <h2>Ações</h2>
+    }
+  <div class="botoes-acoes">
+
+    <!-- Confirmar -->
+
+    @if (item.statusAgendamento === 'Aguardando Resposta' ||
+      item.statusAgendamento === 'Reativado'
+    ) {
+
+      <button
+        type="button"
+        class="btn-acao btn-confirmar"
+        (click)="confirmarAgendamento(item.id)"
+      >
+        ✓ Confirmar
+      </button>
+
+    }
+
+
+    <!-- Concluir -->
+
+    @if (
+    item.statusAgendamento === 'Confirmado'||
+    item.statusAgendamento === 'Aguardando Conclusão'
+    ) {
+
+      <button
+        type="button"
+        class="btn-acao btn-concluir"
+        (click)="concluirAgendamento(item.id)"
+      >
+        ✓ Concluir
+      </button>
+
+    }
+
+
+    <!-- Editar -->
+
+    @if (
+      item.statusAgendamento !== 'Finalizado' &&
+      item.statusAgendamento !== 'Concluído' &&
+      item.statusAgendamento !== 'Cancelado'
+    ) {
+
+      <button
+        type="button"
+        class="btn-acao btn-editar"
+        (click)="editarAgendamento(item.id)"
+      >
+        ✎ Editar
+      </button>
+
+    }
+
+
+    <!-- Cancelar -->
+
+    @if (
+      item.statusAgendamento !== 'Cancelado' &&
+      item.statusAgendamento !== 'Concluído' &&
+      item.statusAgendamento !== 'Finalizado'
+    ) {
+
+      <button
+        type="button"
+        class="btn-acao btn-cancelar"
+        (click)="cancelarAgendamento(item.id)"
+      >
+        × Cancelar
+      </button>
+
+    }
+
+
+    <!-- Reativar -->
+
+    @if (item.statusAgendamento === 'Cancelado') {
+
+      <button
+        type="button"
+        class="btn-acao btn-reativar"
+        (click)="reativarAgendamento(item.id)"
+      >
+        ↻ Reativar
+      </button>
+
+    }
+
+  </div>
+
+</section>
+
+    </div>
+
+  }
+
+</div>
+
+<section class="card-historico">
+
+  <div class="titulo-historico">
+
+    <div>
+      <h2>Histórico do agendamento</h2>
+
+      <p>
+        Registro das alterações e notificações
+      </p>
+    </div>
+
+    <span class="quantidade">
+      {{ historicoNotificacoes().length }}
+    </span>
+
+  </div>
+
+
+  @if (historicoNotificacoes().length > 0) {
+
+    <div class="timeline">
+
+      @for (
+        notificacao of historicoNotificacoes();
+        track notificacao.id
+      ) {
+
+        <div
+        class="timeline-item"
+        [class.criado-cliente]="notificacao.criadoPor === enumCriadoPor.Cliente"
+        [class.criado-profissional]="notificacao.criadoPor === enumCriadoPor.Profissional"
+        [class.criado-sistema]="notificacao.criadoPor === enumCriadoPor.Sistema"
+        >
+
+          <div class="timeline-ponto"></div>
+
+          <div class="timeline-conteudo">
+
+            <div class="timeline-topo">
+
+              <strong>
+                {{ notificacao.descricao }}
+              </strong>
+
+              <span>
+                {{ notificacao.data | date:'dd/MM/yyyy HH:mm' }}
+              </span>
+
+            </div>
+
+
+            <div class="informacao-historico">
+
+              <span>
+                Criado por:
+              </span>
+
+              <strong>
+                {{ (notificacao.criadoPor) }}
+              </strong>
+
+            </div>
+
+
+            @if (notificacao.motivoDaModificacao) {
+
+              <div class="motivo">
+
+                <span>
+                  Motivo da modificação
+                </span>
+
+                <p>
+                  {{ notificacao.motivoDaModificacao }}
+                </p>
+
+              </div>
+
+            }
+
+
+            <div class="status-historico">
+
+              Status:
+
+              <strong>
+                {{ notificacao.statusDoAgendamento }}
+              </strong>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      }
+
+    </div>
+
+  }
+  @else {
+
+    <div class="historico-vazio">
+
+      <p>
+        Nenhuma alteração registrada para este agendamento.
+      </p>
+
+    </div>
+
+  }
+
+</section>
+}
+@for (
+  notificacao of notificacaoToastService.notificacoes();
+  track notificacao.id
+) {
+
+  <div
+    class="notificacao"
+    [class.sucesso]="notificacao.tipo === 'sucesso'"
+    [class.erro]="notificacao.tipo === 'erro'"
+    [class.info]="notificacao.tipo === 'info'"
+  >
+
+    <div class="notificacao-icone">
+      @if (notificacao.tipo === 'sucesso') {
+        ✓
+      }
+
+      @if (notificacao.tipo === 'erro') {
+        !
+      }
+
+      @if (notificacao.tipo === 'info') {
+        i
+      }
+    </div>
+
+    <div class="notificacao-conteudo">
+      {{ notificacao.mensagem }}
+    </div>
+
+    <button
+      type="button"
+      class="notificacao-fechar"
+      (click)="notificacaoToastService.remover(notificacao.id)"
+    >
+      ×
+    </button>
+
+  </div>
+
+}

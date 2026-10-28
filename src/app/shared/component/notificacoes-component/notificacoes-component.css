@@ -1,0 +1,144 @@
+.notificacoes-container {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+
+.notificacoes-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.notificacoes-header h1 {
+  margin: 0;
+}
+
+.notificacoes-header span {
+  color: #777;
+}
+
+.btn-marcar-todas {
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.lista-notificacoes {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.item-notificacao {
+  display: flex;
+  gap: 15px;
+  padding: 18px;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  cursor: pointer;
+  background: white;
+  transition: 0.2s;
+}
+
+.item-notificacao:hover {
+  transform: translateY(-1px);
+}
+
+.item-notificacao.nao-lida {
+  border-left: 4px solid #2563eb;
+  background: #f8fbff;
+}
+
+.icone-notificacao {
+  font-size: 24px;
+}
+
+.conteudo-notificacao {
+  flex: 1;
+}
+
+.notificacao-topo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.descricao {
+  margin: 8px 0 12px;
+}
+
+.detalhes-notificacao {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  font-size: 14px;
+}
+
+.rodape-notificacao {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 12px;
+  font-size: 12px;
+  color: #777;
+}
+
+.bolinha-nao-lida {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #2563eb;
+}
+
+.texto-nao-lida {
+  color: #2563eb !important;
+  font-weight: 600;
+}
+
+.notificacoes-vazia {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 20px;
+  text-align: center;
+}
+
+.icone-vazia {
+  font-size: 45px;
+  margin-bottom: 15px;
+}
+
+.notificacoes-vazia strong {
+  font-size: 20px;
+}
+
+.notificacoes-vazia span {
+  margin-top: 6px;
+  color: #777;
+}
+
+.notificacoes-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  padding: 80px;
+}
+
+.loading-spinner {
+  width: 22px;
+  height: 22px;
+  border: 3px solid #ddd;
+  border-top-color: #333;
+  border-radius: 50%;
+  animation: girar 0.8s linear infinite;
+}
+
+@keyframes girar {
+  to {
+    transform: rotate(360deg);
+  }
+}
